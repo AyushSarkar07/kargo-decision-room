@@ -5,7 +5,7 @@ test (`npm test`, 38 passing) or by driving the running app in a browser (demo m
 = needs something not available in this build.
 
 Everything functional verified so far ran in **demo mode**: local file store, simulated scoring, simulated
-email. The Supabase schema is applied and the app is deployed to Vercel, but no live Gemini call, Supabase read/write by the app, or Resend delivery has been verified yet.
+email. **Live run (29 Sep 2026, `npm run test:live`, results in `docs/live-results.json`):** real Gemini (`gemini-3.8-flash`), Supabase, and Resend in test mode, using synthetic applicants only. All 5 live checks passed.
 
 ## 1. Past hires and rubric
 
@@ -20,7 +20,7 @@ email. The Supabase schema is applied and the app is deployed to Vercel, but no 
 | Per criterion: definition, source hires, 0–4 anchors, weight, SPM ownership, insufficient-evidence rule | Tested | `validateRubric` |
 | JD requirements shown separately, not scored | Implemented | `role_requirements`; "Job description checklist · not scored" |
 | No prestige, names, demographics, or culture fit as signals | Implemented | `excluded_signals`; education withheld from the AI; prompt rule |
-| Calibration: past hires scored with the rubric, pairwise agreement with ratings shown, labelled in-sample | Tested (simulated) | `calibration.test.ts` runs all 8 hire CVs and checks no hire PII reaches any AI payload; Calibration tab shows 15 of 15 pairs with **simulated** rules (not meaningful until run with Gemini) |
+| Calibration: past hires scored with the rubric, pairwise agreement with ratings shown, labelled in-sample | Tested (live) | Gemini: all 8 hires scored; PM 15 of 15 pairs agree with ratings, SPM 13 of 15 (Aditya Shetty, Sales Lead, scores below Vikram Nair and Preetham Rao on SPM). In-sample only |
 | `rubric.txt` and `rubric.json` saved | Implemented | Repo root; `.txt` is generated from `.json` |
 
 ## 2. Workflow
@@ -29,8 +29,8 @@ email. The Supabase schema is applied and the app is deployed to Vercel, but no 
 | --- | --- | --- |
 | Next.js + TypeScript + Tailwind | Tested | `next build` passes |
 | Supabase schema, RLS, private bucket | Tested (schema) | Applied to project `kargo-decision-room` (ap-south-1). Checked: `anon` and `authenticated` cannot read `applicant_pii` or write any table; bucket is private; the only remaining security advisor notices are the intentional "no policy" ones. The RLS helper lives in a private schema. **Blocked:** app reads and writes need the service-role key |
-| Gemini Flash, configurable model id, structured and validated output | Implemented | `GEMINI_MODEL`; Interactions API with a JSON schema, Zod validation, one retry. **Blocked:** no API key, so never called live |
-| Resend send | Implemented | `src/lib/email.ts`. **Blocked:** no API key |
+| Gemini Flash, configurable model id, structured and validated output | Tested (live) | `gemini-3.8-flash` via the Interactions API; every scoring and brief/draft call validated; all briefs and drafts were model-generated (no fallbacks needed) |
+| Resend send | Tested (live) | Two sends accepted by Resend (ids in `docs/live-results.json`) to the test address `delivered@resend.dev` |
 | Vercel deployment | Tested | Live at https://kargo-decision-room.vercel.app. Serves the setup page (names the missing settings); every API route returns 401 without sign-in; demo seeding refused on Vercel. **Blocked:** live mode needs `SUPABASE_SERVICE_ROLE_KEY` and `FOUNDER_EMAILS` in Vercel |
 | PDF, DOCX, TXT upload | Tested | PDF and TXT upload tests; DOCX extraction test using a local hire file |
 | Batch upload with a role per file | Tested | Driven in the browser: 2 files, PM and SPM |
@@ -80,7 +80,7 @@ email. The Supabase schema is applied and the app is deployed to Vercel, but no 
 | Actual destination shown before confirming | Tested | Browser dialog; the server re-checks the confirmed address |
 | Sends only after a deliberate founder action | Tested | Refused without a matching decision |
 | No duplicate sends; provider id recorded | Tested | Concurrent double click, then a retry: exactly one send |
-| Provider acceptance vs confirmed delivery kept distinct | Implemented | `accepted` vs `delivered` (webhook). **Blocked:** webhook not configured |
+| Provider acceptance vs confirmed delivery kept distinct | Tested (acceptance live) | Live sends recorded as `accepted`; `delivered` needs the Resend webhook (not configured) |
 | Failed drafts kept for retry | Tested | Retry after a failure reuses the idempotency key |
 | Demo mode clearly labelled; synthetic data separate | Tested | Mode chips, "Simulated" labels, synthetic filter |
 
@@ -88,11 +88,11 @@ email. The Supabase schema is applied and the app is deployed to Vercel, but no 
 
 | Requirement | Status | Evidence |
 | --- | --- | --- |
-| 3-applicant test (strong PM, weak SPM, ambiguous) | Tested (synthetic) | `workflow.test.ts`; fixtures labelled synthetic |
+| 3-applicant test (strong PM, weak SPM, ambiguous) | Tested (live, synthetic fixtures) | Strong PM 95 (PM, 100% coverage); weak SPM 5 (SPM); ambiguous 25 (PM, 40% coverage, 3 criteria Not evidenced, so labelled incomplete). DB check: no name, email, or phone in stored content; PII stored separately; 6 Gemini requests checked for PII |
 | Records and decisions persist after refresh | Tested | Store reopened; browser reload |
 | 60 application CVs processed | **Blocked** | `applications/` was not provided. The 8 hires were not used as a substitute |
-| Two new CVs, upload to confirmed test send, timed | Tested (demo only) | `scripts/e2e-two-new.ts`: about 1 s with simulated AI and email. **Not a live measurement** |
-| Receipt within 30 s | **Blocked** | Needs Resend credentials and a test inbox |
+| Two new CVs, upload to confirmed test send, timed | Tested (live) | 36.0 s from upload to provider acceptance (scoring about 16–17 s per CV). Measured server-side through the app's own code, without the browser/HTTP layer |
+| Receipt within 30 s | **Not verified** | The Resend key is send-only, so delivery status can't be read back, and `delivered@resend.dev` is a simulated inbox. To measure receipt, add your own inbox to `EMAIL_TEST_ALLOWLIST` (or configure the delivery webhook) |
 
 ## Found and fixed during verification
 

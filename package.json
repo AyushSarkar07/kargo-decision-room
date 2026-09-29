@@ -11,7 +11,8 @@
     "verify:rubric": "tsx scripts/verify-rubric.ts",
     "build:rubric": "tsx scripts/build-rubric-txt.ts",
     "typecheck": "tsc --noEmit",
-    "build:rubric-sql": "tsx scripts/build-rubric-sql.ts"
+    "build:rubric-sql": "tsx scripts/build-rubric-sql.ts",
+    "test:live": "vitest run -c vitest.live.config.mts"
   },
   "dependencies": {
     "@google/genai": "^2.24.0",
