@@ -4,8 +4,8 @@ Status as of 29 Sep 2026. **Implemented** = code exists. **Tested** = verified b
 test (`npm test`, 38 passing) or by driving the running app in a browser (demo mode). **Blocked**
 = needs something not available in this build.
 
-Everything verified so far ran in **demo mode**: local file store, simulated scoring, simulated
-email. No live Gemini call, Supabase write, deployment, or Resend delivery has been verified yet.
+Everything functional verified so far ran in **demo mode**: local file store, simulated scoring, simulated
+email. The Supabase schema is applied and the app is deployed to Vercel, but no live Gemini call, Supabase read/write by the app, or Resend delivery has been verified yet.
 
 ## 1. Past hires and rubric
 
@@ -31,7 +31,7 @@ email. No live Gemini call, Supabase write, deployment, or Resend delivery has b
 | Supabase schema, RLS, private bucket | Tested (schema) | Applied to project `kargo-decision-room` (ap-south-1). Checked: `anon` and `authenticated` cannot read `applicant_pii` or write any table; bucket is private; the only remaining security advisor notices are the intentional "no policy" ones. The RLS helper lives in a private schema. **Blocked:** app reads and writes need the service-role key |
 | Gemini Flash, configurable model id, structured and validated output | Implemented | `GEMINI_MODEL`; Interactions API with a JSON schema, Zod validation, one retry. **Blocked:** no API key, so never called live |
 | Resend send | Implemented | `src/lib/email.ts`. **Blocked:** no API key |
-| Vercel deployment support | Implemented | Standard Next.js build; per-route `maxDuration`. **Blocked:** not deployed |
+| Vercel deployment | Tested | Live at https://kargo-decision-room.vercel.app. Serves the setup page (names the missing settings); every API route returns 401 without sign-in; demo seeding refused on Vercel. **Blocked:** live mode needs `SUPABASE_SERVICE_ROLE_KEY` and `FOUNDER_EMAILS` in Vercel |
 | PDF, DOCX, TXT upload | Tested | PDF and TXT upload tests; DOCX extraction test using a local hire file |
 | Batch upload with a role per file | Tested | Driven in the browser: 2 files, PM and SPM |
 | Scanned or unreadable file → clear recovery path, nothing invented | Tested | Image-only PDF stops at "Needs text"; pasted text recovers it |

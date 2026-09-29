@@ -75,9 +75,17 @@ You can add `GEMINI_API_KEY` alone to get real AI scoring while still storing lo
 
 ### Deploy to Vercel
 
+Production: **https://kargo-decision-room.vercel.app** (Vercel team MESA, project `kargo-decision-room`).
+Code: https://github.com/AyushSarkar07/kargo-decision-room (private).
+
+
 Import the repo into Vercel, add the same variables in Project Settings → Environment
 Variables (never `NEXT_PUBLIC_` for secrets), and deploy. Function limits are set per route
 (`maxDuration` up to 120 s for scoring).
+
+If Vercel blocks a deploy with "the commit author doesn't have permission", the GitHub account
+that authored the commit isn't linked to the Vercel account. Link it in Vercel → Account Settings →
+Login Connections, or deploy the committed tree without git metadata with `scripts/deploy.sh`.
 
 ## Calibration
 
