@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# env files: secrets never go in Git; .env.example holds placeholders only
+!.env.example
+
+# private source material (real CVs with personal details) and local demo data
+/source/
+/.data/
+/test-results/
+/screenshots/raw/

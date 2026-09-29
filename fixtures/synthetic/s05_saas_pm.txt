@@ -1,0 +1,19 @@
+Ritika Sharma
+ritika.sharma@example.com | +91 90000 11105 | Bengaluru
+
+SUMMARY
+Product manager in B2B SaaS with a strong record of shipping and stakeholder management.
+
+EXPERIENCE
+Product Manager | Ledgerly (Series C, accounting SaaS), Bengaluru | 2022 – Present
+- Owns invoicing module for 900+ SMB customers, part of a 7-person PM team
+- Shipped 14 features in 2 years; 4 moved to the paid tier, adding $220K ARR
+- Increased feature adoption by 28% after a redesign informed by 35 user interviews
+- Presented quarterly roadmap to VP Product
+
+Associate Product Manager | Ledgerly, Bengaluru | 2020 – 2022
+- Wrote PRDs and ran sprint reviews
+- Built an analytics dashboard with the data team
+
+EDUCATION
+MBA, 2020; B.Tech, 2016

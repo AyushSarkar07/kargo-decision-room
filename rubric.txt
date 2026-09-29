@@ -1,0 +1,271 @@
+KARGO PM AND SPM HIRING RUBRIC
+Version 2026-09-29.1
+
+Source: eight past-hire CVs and the hire outcomes table. The two job descriptions
+were used to understand the roles and are listed separately at the end; they are
+not a source for any scored criterion.
+
+DATA GAPS
+  • All eight hire files were read successfully. They are application CVs only.
+  • The case pre-read says each hire profile contains 'what the interview revealed' and 'a one-line outcome note'. None of the eight files contains interview findings or an outcome note. No interview evidence has been invented; every pattern below rests on CV (application) evidence plus the rating in the outcomes table.
+  • Ratings are a single 'last rating' per person. There is no tenure-adjusted history, no manager, and no information on why anyone was rated as they were.
+
+HIRE OUTCOMES
+  Rohan Desai            Head of Engineering        Jul 2022  Exceeds Expectations
+  Sunita Krishnamurthy   Operations Lead            Jan 2023  Exceeds Expectations
+  Vikram Nair            Product Manager            Jun 2023  Meets Expectations
+  Aditya Shetty          Sales Lead                 Aug 2023  Exceeds Expectations
+  Preetham Rao           Backend Engineer           Feb 2024  Below Expectations
+  Meghna Tiwari          Customer Success Manager   Aug 2024  Exceeds Expectations
+  Lavanya Iyer           Product Manager            Apr 2025  Exceeds Expectations
+  Rahul Bose             Growth & Marketing Lead    Jun 2025  Meets Expectations
+
+------------------------------------------------------------------------------
+PATTERNS: WHAT THE HIGHER-RATED HIRES HAD IN COMMON
+------------------------------------------------------------------------------
+
+P1. They did the operational work before they built, sold, or supported it
+   Strength: Strongest pattern: present in all 5 higher-rated hires and absent in all 3 others.
+   Every Exceeds hire personally handled freight or logistics operations (documents, shipments, carriers, customs holds) at some point, and later roles visibly draw on that. None of the Meets or Below hires did operational work; the closest is Preetham, who integrated with logistics providers from an e-commerce engineering team.
+   Supporting evidence:
+     – Rohan Desai (Head of Engineering, Exceeds Expectations): "Managed end-to-end import/export documentation for 180+ shipments monthly — Bills of Lading, Shipping Bills, Certificates of Origin, LC documentation, and customs clearance coordination"
+     – Sunita Krishnamurthy (Operations Lead, Exceeds Expectations): "Managed Bills of Lading, Shipping Instructions, Certificates of Origin, packing lists, and customs documentation for 200+ import and export shipments monthly across sea and air modes"
+     – Aditya Shetty (Sales Lead, Exceeds Expectations): "Worked alongside the terminal operations team during peak periods — understood firsthand the pressure on freight forwarder teams around berth windows, DO releases, and last-minute documentation corrections"
+     – Meghna Tiwari (Customer Success Manager, Exceeds Expectations): "managing queries, documentation requests, and shipment updates across 15–20 active shipments daily"
+     – Lavanya Iyer (Product Manager, Exceeds Expectations): "Managed carrier allocation, capacity planning, and exception management for 3 FMCG client accounts across South India — combined throughput of 800+ shipments monthly"
+   Counterexamples:
+     – Vikram Nair (Product Manager, Meets Expectations): "building and scaling enterprise SaaS products in the HR technology space" — No operational work in any role.
+     – Rahul Bose (Growth & Marketing Lead, Meets Expectations): "Full ownership of demand generation across SEO, paid search, content, field events, and lifecycle email" — Marketing roles in fintech and HR tech; no operational work.
+     – Preetham Rao (Backend Engineer, Below Expectations): "Integrated with 3 third-party logistics providers (Delhivery, Bluedart, Ecom Express) via REST and SFTP APIs" — Technical integration with logistics providers from inside an e-commerce engineering team. This is exposure to operators, not doing operational work.
+   Limitations:
+     – Kargo is a logistics company, so domain familiarity may be rewarded by the rating process itself; the pattern may partly reflect how people were rated rather than how they performed.
+     – Both job descriptions mention operations curiosity (PM) or familiarity (SPM). The criterion is kept narrower than the JDs: it scores having done the work, with named artefacts or volumes, not interest in it.
+     – Five people in five different functions. Only one Exceeds hire (Lavanya) was a PM, so this is a hypothesis for PM hiring, not a proven predictor.
+
+P2. They fixed something nobody asked them to fix, and the people doing the work adopted it
+   Strength: Moderate: clear in all 5 higher-rated hires; a weaker or in-mandate version appears in 2 of 3 others.
+   Higher-rated hires repeatedly describe noticing a gap in someone's day-to-day work, building a fix unprompted, and naming who adopted it and how fast. Lower-rated hires show improvement work, but it is usually inside their own function or assigned remit, and adoption by the people doing the work is rarely stated.
+   Supporting evidence:
+     – Rohan Desai (Head of Engineering, Exceeds Expectations): "Built a shipment tracking and status update system in Excel after finding that the team had no reliable way to know where each shipment stood; adopted across the 12-member operations team within two weeks"
+     – Rohan Desai (Head of Engineering, Exceeds Expectations): "identified the repetitive manual check process, built a working prototype over a weekend, had 30 colleagues using it within the first month; now a core platform feature"
+     – Sunita Krishnamurthy (Operations Lead, Exceeds Expectations): "When the company's FMS vendor changed their data export format without notice, independently redesigned the team's documentation intake and filing workflow over a weekend to ensure no disruption; the updated process was retained permanently by the team"
+     – Aditya Shetty (Sales Lead, Exceeds Expectations): "ran a post-mortem on the loss, documented root cause (misread of IT procurement cycle and wrong economic buyer identified), shared with the team; now standard practice before account qualification"
+     – Meghna Tiwari (Customer Success Manager, Exceeds Expectations): "Wrote the customer onboarding checklist and documentation set that became the team's standard — reduced customer queries during onboarding by 35%"
+     – Lavanya Iyer (Product Manager, Exceeds Expectations): "Built a daily visibility dashboard for the operations team tracking 500+ active shipments across carriers; started in Excel, migrated to Tableau after the team outgrew it; adopted by 2 other regional teams"
+   Counterexamples:
+     – Vikram Nair (Product Manager, Meets Expectations): "Built and socialised a PRD template and sprint review process adopted by the 4-person PM team" — Shows the pattern in part: adopted by peers, but it is internal PM process rather than a fix to users' daily work. Weakens how cleanly this pattern separates the groups.
+     – Rahul Bose (Growth & Marketing Lead, Meets Expectations): "Launched Ventus's first customer case study programme — 3 case studies produced" — A first-of-its-kind initiative, but squarely inside his marketing mandate.
+     – Preetham Rao (Backend Engineer, Below Expectations): "Built an internal monitoring dashboard for order exception rates — surfaced a systemic coupon validation bug" — Self-started and valuable; adoption by others is not described.
+   Limitations:
+     – The difference between groups is one of degree (whose problem, who adopted it), which requires judgment when scoring.
+     – CV writing style affects how visible this is. A candidate who did this but writes terse bullets will score lower; the insufficient-evidence rule exists to catch that.
+
+P3. They owned what went wrong, through to closure
+   Strength: Moderate: every higher-rated hire describes owning a setback or incident to a stated outcome; the others describe routine incident response or only successes.
+   Higher-rated hires describe a specific failure, loss, or crisis and what they personally did until it was closed, often including a written learning others used or a decision to stop their own work. Vikram and Rahul describe only wins; Preetham describes incident handling as part of an on-call rotation.
+   Supporting evidence:
+     – Lavanya Iyer (Product Manager, Exceeds Expectations): "killed 2 after early usage data showed low adoption despite strong qualitative demand in discovery — redirected the sprint capacity to a workflow that showed 3x higher weekly active use within 30 days"
+     – Lavanya Iyer (Product Manager, Exceeds Expectations): "Drafted and sent the post-mortem after a 4-hour platform outage — wrote the internal and customer-facing versions, ran the retrospective, and owned the follow-up action items to closure"
+     – Aditya Shetty (Sales Lead, Exceeds Expectations): "Spent 4 months working a large freight forwarder account that ultimately did not buy — ran a post-mortem on the loss, documented root cause"
+     – Meghna Tiwari (Customer Success Manager, Exceeds Expectations): "When a customs hold arose from a documentation error at 7pm before a critical shipment window, coordinated directly with the CHA and customs officer through the night to resolve before the client became aware — shipment departed on schedule"
+     – Rohan Desai (Head of Engineering, Exceeds Expectations): "Led migration from a legacy third-party data vendor after identifying reliability issues — completed under time pressure with no data loss and a 60% reduction in processing lag"
+     – Sunita Krishnamurthy (Operations Lead, Exceeds Expectations): "Liaised with Customs Preventive and Audit teams during two shipment-level inspections; both closed without penalties"
+   Counterexamples:
+     – Preetham Rao (Backend Engineer, Below Expectations): "Part of the P1 on-call rotation — average time-to-resolve for P1 incidents: 22 minutes" — Fast incident response as a rota duty. Shows responsiveness under pressure, but not ownership of cause, learning, or follow-through. Rated Below, so pressure response alone does not separate the groups.
+     – Vikram Nair (Product Manager, Meets Expectations): "Shipped 12 features over 18 months" — Every bullet is a success; no setback, stopped work, or post-mortem is described. Silence is not evidence of weakness, only absence of evidence.
+     – Rahul Bose (Growth & Marketing Lead, Meets Expectations): "₹2.4Cr in pipeline sourced in FY24 — 120% of annual target" — Only upside metrics are described.
+   Limitations:
+     – People rarely put failures on a CV. Absence of this evidence is treated as 'Not evidenced', never as a low score, and becomes an interview question.
+     – The case says hire profiles should include interview findings; this is exactly the kind of evidence interviews would reveal, and it is missing from the files.
+
+Considered but not used as patterns:
+  • Independence alone: Rahul Bose ('no CMO above, reports to CEO') operated with high independence and was rated Meets. Independence is included as a lower-weighted criterion and as an SPM overlay because the SPM role has no senior PM layer, not because the history shows it predicts ratings on its own.
+  • Quantified results in general: All eight CVs are heavy on numbers. What differs is what the numbers measure, captured in the 'Impact on the user's operation' criterion.
+  • Mentoring: Mentoring appears in both groups (Rohan, Sunita, Preetham), so it does not separate them.
+  • Education, employer brand, certifications, years of experience: Excluded by design: they are prestige or JD-type signals, and they appear in both groups.
+
+These are hypotheses from eight mixed-role profiles, not proof of predictive accuracy.
+
+------------------------------------------------------------------------------
+PRODUCT MANAGER (PM) RUBRIC
+------------------------------------------------------------------------------
+
+Criterion name: Hands-on operations work
+Weight: 30%
+What a strong candidate looks like: The candidate has personally done operational work inside an operations-heavy business, such as freight, logistics, port or terminal, supply chain, or field operations: handling the shipments, documents, exceptions, carriers, or customer requests themselves. Building software for, selling to, or integrating with such operators does not count as doing the work.
+Drawn from: P1; Rohan Desai, Sunita Krishnamurthy, Aditya Shetty, Meghna Tiwari, Lavanya Iyer
+Scoring anchors:
+  0 — Work history is described in detail and contains no operations-facing work at all.
+  1 — Indirect exposure only: built software for, sold to, or integrated with operators without doing the operational work.
+  2 — A short operational stint (under about a year, an internship or rotation), or sustained operational work in a domain that is not operations-heavy.
+  3 — At least one sustained role (a year or more) doing operational work, with named artefacts or volumes (shipments per month, document types, exception handling, carriers).
+  4 — Sustained operational work in freight, logistics, supply chain, or port operations, and later roles show that knowledge being used in specific decisions.
+Insufficient evidence: If roles are listed without descriptions, mark Not evidenced rather than 0. A 0 requires a described work history with no operational work in it.
+
+Criterion name: Self-started fixes others adopted
+Weight: 25%
+What a strong candidate looks like: The candidate noticed a recurring problem in the day-to-day work of the people around them, built or changed something without being asked, and other people adopted it. Look for three things: what they noticed, what they built or changed, and who adopted it, how many, or how fast.
+Drawn from: P2; Rohan Desai, Sunita Krishnamurthy, Aditya Shetty, Meghna Tiwari, Lavanya Iyer
+Scoring anchors:
+  0 — Detailed history shows only assigned work; no change they initiated is described.
+  1 — Mentions an improvement, but the trigger, the fact that it was self-started, or any adoption is missing (e.g. 'improved processes').
+  2 — A clear self-started fix with a stated problem, but adoption is limited to themselves or not described.
+  3 — A self-started fix with a stated trigger and named adoption by others (a team, customers) with some scale or timeframe.
+  4 — Two or more such fixes, or one that became a standard beyond the original team (other teams, a core product feature), with adoption evidence.
+Insufficient evidence: Generic phrases ('drove efficiency', 'process improvements') with no trigger or adoption score at most 1. If no project or achievement descriptions exist at all, mark Not evidenced.
+
+Criterion name: Owns setbacks to closure
+Weight: 20%
+What a strong candidate looks like: When something went wrong, such as an incident, a lost deal, a feature that did not work, or a customer or customs hold, the candidate personally owned the recovery or the learning and saw it through to a stated close. Strong evidence includes stopping their own work based on evidence, or writing a post-mortem others used.
+Drawn from: P3; Lavanya Iyer, Lavanya Iyer, Aditya Shetty, Meghna Tiwari, Rohan Desai, Sunita Krishnamurthy
+Scoring anchors:
+  0 — Setbacks are described, but the candidate's role was to escalate or hand off without their own follow-through.
+  1 — Responds to issues as a routine duty (on-call, bug fixing) with no ownership of cause, recovery, or learning.
+  2 — Owned the recovery of a specific setback, with the outcome stated.
+  3 — Owned the recovery and produced a learning others used (post-mortem, shared root cause, changed practice), or stopped their own work based on evidence.
+  4 — Several instances, including stopping their own work on evidence and a written learning adopted by others.
+Insufficient evidence: If no setback is described anywhere, mark Not evidenced. Never treat silence about failure as failure. Suggest it as an interview probe.
+
+Criterion name: Impact on the user's operation
+Weight: 15%
+What a strong candidate looks like: The candidate describes results as what changed for the people doing the work: fewer support tickets or queries, fewer delays or exceptions, lower churn, inspections passed, shipments on time. Results stated only as outputs (features shipped, tasks completed) or internal metrics (funnel, uptime, velocity) score lower.
+Drawn from: P1, P2; Rohan Desai, Lavanya Iyer, Meghna Tiwari, Sunita Krishnamurthy, Aditya Shetty
+Scoring anchors:
+  0 — Across a detailed history, results are stated only as activities or outputs, with no effect on anyone described.
+  1 — Metrics are present but internal only (velocity, uptime, funnel, feature counts).
+  2 — At least one result is stated as a change for users or customers, but it is vague or unquantified.
+  3 — One or two quantified changes in users' operational results, with a baseline or comparison.
+  4 — Impact is consistently framed through users' operations, with quantified, comparative results across more than one role.
+Insufficient evidence: If the CV states no results at all, mark Not evidenced.
+
+Criterion name: Makes and stands behind calls
+Weight: 10%
+What a strong candidate looks like: The candidate was the person making the decision in their area, without a manager or senior peer making it for them, and the CV names a specific decision they made and what happened as a result. Scope alone ('owned X') is not a decision.
+Drawn from: P3; Lavanya Iyer, Aditya Shetty, Rohan Desai, Sunita Krishnamurthy, Meghna Tiwari
+Scoring anchors:
+  0 — Detailed history shows the candidate consistently executing others' decisions, with no decision of their own described.
+  1 — Claims ownership of an area but names no decision they made.
+  2 — Names a decision they made within a scope someone else set.
+  3 — Sole owner of an area, with at least one named decision and its result.
+  4 — Sole owner with several named decisions, including an unpopular or reversing call and its consequence.
+Insufficient evidence: Titles and scope statements alone score at most 1. If the CV describes no work in enough detail to see who decided, mark Not evidenced.
+
+Total: 100%
+
+------------------------------------------------------------------------------
+SENIOR PRODUCT MANAGER (SPM) RUBRIC
+------------------------------------------------------------------------------
+
+Criterion name: Hands-on operations work
+Weight: 25%
+What a strong candidate looks like: The candidate has personally done operational work inside an operations-heavy business, such as freight, logistics, port or terminal, supply chain, or field operations: handling the shipments, documents, exceptions, carriers, or customer requests themselves. Building software for, selling to, or integrating with such operators does not count as doing the work.
+Drawn from: P1; Rohan Desai, Sunita Krishnamurthy, Aditya Shetty, Meghna Tiwari, Lavanya Iyer
+Scoring anchors:
+  0 — Work history is described in detail and contains no operations-facing work at all.
+  1 — Indirect exposure only: built software for, sold to, or integrated with operators without doing the operational work.
+  2 — A short operational stint, or sustained operational work in a domain that is not operations-heavy.
+  3 — At least one sustained role doing operational work with named artefacts or volumes.
+  4 — Sustained operational work in an operations-heavy domain, and the candidate later used that knowledge to make a call they owned that changed how several teams or customers work, such as redesigning a process, a product area, or an integration.
+Stronger independent ownership for SPM: For SPM, a 4 needs more than time in operations: the candidate must have turned operational knowledge into a decision they owned with consequences beyond their own team.
+Insufficient evidence: If roles are listed without descriptions, mark Not evidenced rather than 0. A 0 requires a described work history with no operational work in it.
+
+Criterion name: Self-started fixes others adopted
+Weight: 20%
+What a strong candidate looks like: The candidate noticed a recurring problem in the day-to-day work of the people around them, built or changed something without being asked, and other people adopted it. Look for three things: what they noticed, what they built or changed, and who adopted it, how many, or how fast.
+Drawn from: P2; Rohan Desai, Sunita Krishnamurthy, Aditya Shetty, Meghna Tiwari, Lavanya Iyer
+Scoring anchors:
+  0 — Detailed history shows only assigned work; no change they initiated is described.
+  1 — Mentions an improvement without trigger, initiative, or adoption.
+  2 — A clear self-started fix, adoption limited or not described.
+  3 — A self-started fix adopted by others, with scale or timeframe.
+  4 — A self-started change that became a standard other teams or customers rely on (a practice, system, or product capability), and the candidate drove the adoption themselves rather than handing it off.
+Stronger independent ownership for SPM: For SPM, look for the candidate driving adoption across team boundaries themselves: persuading other teams or customers, not only building the fix.
+Insufficient evidence: Generic phrases ('drove efficiency', 'process improvements') with no trigger or adoption score at most 1. If no project or achievement descriptions exist at all, mark Not evidenced.
+
+Criterion name: Owns setbacks to closure
+Weight: 20%
+What a strong candidate looks like: When something went wrong, such as an incident, a lost deal, a feature that did not work, or a customer or customs hold, the candidate personally owned the recovery or the learning and saw it through to a stated close. Strong evidence includes stopping their own work based on evidence, or writing a post-mortem others used.
+Drawn from: P3; Lavanya Iyer, Lavanya Iyer, Aditya Shetty, Meghna Tiwari, Rohan Desai, Sunita Krishnamurthy
+Scoring anchors:
+  0 — Setbacks are described, but the candidate escalated or handed off without follow-through.
+  1 — Routine incident response with no ownership of cause, recovery, or learning.
+  2 — Owned the recovery of a specific setback, outcome stated.
+  3 — Owned a setback with consequences beyond their own tasks (customers, other teams, revenue) and decided what changed afterwards.
+  4 — Several such cases, including stopping or reversing their own significant decision on evidence, with the learning adopted across teams.
+Stronger independent ownership for SPM: For SPM, the setback must have had consequences beyond the candidate's own tasks, and the candidate must have been the one deciding what changed afterwards.
+Insufficient evidence: If no setback is described anywhere, mark Not evidenced. Never treat silence about failure as failure. Suggest it as an interview probe.
+
+Criterion name: Impact on the user's operation
+Weight: 15%
+What a strong candidate looks like: The candidate describes results as what changed for the people doing the work: fewer support tickets or queries, fewer delays or exceptions, lower churn, inspections passed, shipments on time. Results stated only as outputs (features shipped, tasks completed) or internal metrics (funnel, uptime, velocity) score lower.
+Drawn from: P1, P2; Rohan Desai, Lavanya Iyer, Meghna Tiwari, Sunita Krishnamurthy, Aditya Shetty
+Scoring anchors:
+  0 — Only activities or outputs, across a detailed history.
+  1 — Internal metrics only.
+  2 — A user-facing result, vague or unquantified.
+  3 — Quantified user-facing results with a baseline.
+  4 — Quantified results across many customers or a segment (for example, an integration that unblocked a group of customers), not only a single account.
+Stronger independent ownership for SPM: For SPM, look for outcomes across multiple customers or a segment that the candidate's decisions produced, not a single account.
+Insufficient evidence: If the CV states no results at all, mark Not evidenced.
+
+Criterion name: Makes and stands behind calls
+Weight: 20%
+What a strong candidate looks like: The candidate was the person making the decision in their area, without a manager or senior peer making it for them, and the CV names a specific decision they made and what happened as a result. Scope alone ('owned X') is not a decision.
+Drawn from: P3; Lavanya Iyer, Aditya Shetty, Rohan Desai, Sunita Krishnamurthy, Meghna Tiwari
+Scoring anchors:
+  0 — Consistently executing others' decisions.
+  1 — Claims ownership, names no decision.
+  2 — A decision within someone else's scope.
+  3 — Owned an area with no senior layer above making the calls, and names decisions with consequences beyond their own team.
+  4 — Set direction for an area others depended on (other teams, customers, a platform), made hard trade-off calls with named consequences, and lived with the outcome.
+Stronger independent ownership for SPM: For SPM this is weighted twice as heavily as for PM, because the SPM role has no senior PM layer. This weighting comes from the role, not from the hire history, which shows independence alone does not separate ratings (see Rahul Bose).
+Insufficient evidence: Titles and scope statements alone score at most 1. If the CV describes no work in enough detail to see who decided, mark Not evidenced.
+
+Total: 100%
+
+------------------------------------------------------------------------------
+SCORING AND MISSING EVIDENCE
+------------------------------------------------------------------------------
+Scale: 0–4, or Not evidenced.
+  Not evidenced: A criterion is marked 'Not evidenced' (stored as null) when the CV does not contain enough information to judge it. This is different from 0.
+  Zero: 0 means the CV describes the relevant work in enough detail to judge, and it shows the opposite or clear absence of the behaviour. 0 is a demonstrated weakness, not a gap.
+  • Each criterion is scored 0–4 or marked Not evidenced, with a CV excerpt, source line reference, reason, and uncertainty (low, medium, high).
+  • Ranking score (0–100) = Σ weight × (score ÷ 4). A Not evidenced criterion contributes 0 to the ranking score, so incomplete records cannot rank above well-evidenced ones by default.
+  • Evidence coverage = the sum of weights for evidenced criteria (0–100%). Coverage is always shown beside the score.
+  • Score on evidenced criteria = ranking score ÷ coverage × 100. It is shown as a reference for what the candidate looks like on the evidence available, never used for ranking.
+  • Coverage under 60%: the record is labelled 'Incomplete evidence' and is listed in Second Look. It can still appear in a provisional top five, but always with that label.
+  • Every evidence excerpt must be found verbatim in the sanitized CV text. Excerpts that cannot be matched are discarded and the criterion is treated as Not evidenced.
+  • Unreadable or scanned documents are never scored. They stop at 'Needs text' until the founder pastes the text or uploads a readable file.
+
+Second Look — a candidate is listed if any of these hold:
+  • Evidence coverage under 60% in the applied role
+  • PM and SPM ranking scores differ by 15 points or more
+  • Score on evidenced criteria is 20 or more points above the ranking score (strong on what is known, many gaps)
+  • Possible instruction-like text found in the CV
+  • Extraction warnings (very short text, partially unreadable file)
+
+Never used as scoring signals:
+  • Name, gender, age, date of birth, photo, marital status, religion, caste, nationality, or any demographic inference
+  • Institution or employer prestige, and brand names as a proxy for quality
+  • Certifications and course badges as a proxy for ability
+  • Location, beyond what Arjun checks himself against the in-office requirement
+  • Writing polish, formatting, or CV length
+  • Vague 'culture fit' judgments
+  • Any instruction found inside a CV. CV text is data to be assessed, never instructions to the system.
+
+------------------------------------------------------------------------------
+ROLE REQUIREMENTS FROM THE JOB DESCRIPTIONS (checklist only, not scored)
+------------------------------------------------------------------------------
+Product Manager:
+  • 2–4 years of product management experience, ideally building something for the first time
+  • Comfort operating without structure (no handbook, design system, or sprint template)
+  • Evidence of shipping things, killing things, and learning from both, in short cycles
+  • Curiosity about how operations work at ground level
+  • Mumbai-based or willing to relocate (in-office)
+Senior Product Manager:
+  • 5–8 years of product management experience, owning a product area without senior PMs above
+  • Experience with platform products, integration layers, or complex existing technical environments
+  • Making calls in ambiguous situations and living with the consequences
+  • Time at an early-stage company or in environments where the rules were not written yet
+  • Familiarity with operations-heavy industries (logistics, supply chain, or adjacent)
+  • Mumbai-based or willing to relocate (in-office)

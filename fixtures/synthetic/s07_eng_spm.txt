@@ -1,0 +1,16 @@
+Sameer Joshi
+sameer.joshi@example.com | +91 90000 11107 | Hyderabad | github.com/sameerj-synthetic
+
+EXPERIENCE
+Engineering Manager | Paystack-like Payments Co (synthetic), Hyderabad | 2021 – Present
+- Manages 9 engineers on the payments gateway
+- 99.99% uptime over 24 months; p95 latency reduced by 35%
+- Part of the P1 on-call rotation; average resolution 18 minutes
+- Mentored 4 engineers
+
+Senior Software Engineer | Same company | 2017 – 2021
+- Built reconciliation services processing 5M events daily
+- Integrated with 6 bank APIs
+
+EDUCATION
+B.Tech CS, 2017

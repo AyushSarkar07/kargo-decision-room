@@ -1,0 +1,6 @@
+# Never upload private source material, local demo data, or env files.
+source/
+.data/
+.env*
+!.env.example
+docs/screenshots/
