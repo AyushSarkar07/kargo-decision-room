@@ -13,7 +13,15 @@ export default async function Home() {
   if (cfg.data === "local-demo") {
     return (
       <Notice title="Setup needed">
-        This deployment has no database configured. Demo mode only runs locally. Add the Supabase variables described in the README to run live.
+        Live mode is not configured yet, and demo mode only runs locally. Missing settings:
+        <ul className="mt-2 list-disc pl-5 font-mono text-[12.5px]">
+          {["NEXT_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_ANON_KEY", "SUPABASE_SERVICE_ROLE_KEY", "FOUNDER_EMAILS"]
+            .filter((k) => !process.env[k]?.trim())
+            .map((k) => (
+              <li key={k}>{k}</li>
+            ))}
+        </ul>
+        <p className="mt-2">Add them in the Vercel project settings and redeploy. See the README.</p>
       </Notice>
     );
   }
