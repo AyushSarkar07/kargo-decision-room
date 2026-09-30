@@ -4,7 +4,7 @@ import type { ScoringOutput, SynthesisOutput } from "./schemas";
 import type { synthesisInput } from "./prompts";
 
 export type SynthesisArgs = Parameters<typeof synthesisInput>[0];
-export type PIIGuard = Pick<ApplicantPII, "full_name" | "email" | "phone" | "links">;
+export type PIIGuard = Pick<ApplicantPII, "full_name" | "email" | "phone" | "links"> & { aliases?: string[] };
 
 export interface AIProvider {
   /** Recorded on every evaluation, brief, and draft. "simulated" is never presented as AI output. */

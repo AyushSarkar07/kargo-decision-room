@@ -41,9 +41,9 @@ export async function runCalibration(): Promise<CalibrationRun> {
         results.push({ hire_id: h.id, group: h.group, status: "unreadable", error: ex.warnings.join(" ") });
         continue;
       }
-      const sep = separatePII(ex.text);
+      const sep = separatePII(ex.text, null, h.file);
       const lines = toLines(sep.sanitizedLines);
-      const out = await provider.score(lines, "PM", { ...sep.pii });
+      const out = await provider.score(lines, "PM", { ...sep.pii, aliases: sep.redactedTokens });
       const r: CalibrationHireResult = { hire_id: h.id, group: h.group, status: "scored" };
       for (const role of ROLES) {
         const criteria = verifyCriteria(out.evaluations[role].criteria, lines);

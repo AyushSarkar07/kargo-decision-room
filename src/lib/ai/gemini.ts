@@ -14,7 +14,7 @@ export class GeminiProvider implements AIProvider {
 
   private async call<T>(system: string, input: string, schema: object, zod: ZodType<T>, guard: PIIGuard): Promise<T> {
     // Last line of defence: refuse to send anything identifying.
-    assertNoPII(system + "\n" + input, guard);
+    assertNoPII(input, guard, guard.aliases);
     if (process.env.NODE_ENV === "test") outboundLog.push({ system, input });
     let lastError = "";
     for (let attempt = 0; attempt < 2; attempt++) {

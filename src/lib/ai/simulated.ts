@@ -80,7 +80,7 @@ export class SimulatedProvider implements AIProvider {
 
   async score(lines: Line[], appliedRole: Role | null, guard: PIIGuard): Promise<ScoringOutput> {
     const input = scoringInput(lines, appliedRole);
-    assertNoPII(SCORING_SYSTEM + "\n" + input, guard);
+    assertNoPII(input, guard, guard.aliases);
     if (process.env.NODE_ENV === "test") outboundLog.push({ system: SCORING_SYSTEM, input });
     const evaluations = Object.fromEntries(
       ROLES.map((role) => [
@@ -110,7 +110,7 @@ export class SimulatedProvider implements AIProvider {
 
   async synthesize(args: SynthesisArgs, guard: PIIGuard): Promise<SynthesisOutput> {
     const input = synthesisInput(args);
-    assertNoPII(SYNTHESIS_SYSTEM + "\n" + input, guard);
+    assertNoPII(input, guard, guard.aliases);
     if (process.env.NODE_ENV === "test") outboundLog.push({ system: SYNTHESIS_SYSTEM, input });
     const brief = (role: Role): [string, string, string] => {
       const cs = args.byRole[role].criteria;

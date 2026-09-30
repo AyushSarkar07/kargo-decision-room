@@ -87,6 +87,18 @@ If Vercel blocks a deploy with "the commit author doesn't have permission", the 
 that authored the commit isn't linked to the Vercel account. Link it in Vercel → Account Settings →
 Login Connections, or deploy the committed tree without git metadata with `scripts/deploy.sh`.
 
+## Loading a folder of applications
+
+```bash
+npx tsx scripts/load-applications.ts source/applications
+```
+
+Uploads every PDF/DOCX/TXT through the deployed app's own endpoints (sign-in with `ACCESS_CODE`),
+three at a time, with retries and duplicate detection, and prints progress per file. The role
+comes from the filename: `pm_…` → PM, `spm_…` → SPM, anything else → **Role not stated**.
+Those applicants are scored against both rubrics but are not ranked or emailed until you choose
+a role for each in the review panel. Nothing is guessed.
+
 ## Calibration
 
 The **Calibration** tab scores the eight past hires with the current rubric, through the same

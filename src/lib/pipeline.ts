@@ -2,7 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { getConfig } from "./config";
 import { extractText, findInstructionLikeLines, kindFromName, MAX_FILE_BYTES, sha256, textHash, toLines } from "./extract";
-import { separatePII } from "./pii";
+import { nameFromFilename, separatePII } from "./pii";
 import { rubric, RUBRIC_VERSION, ROLES, otherRole, type Role } from "./rubric";
 import { summarize } from "./scoring";
 import { getStore } from "./store";
@@ -92,7 +92,7 @@ export async function ingestFile(input: IngestInput): Promise<Applicant> {
   if (extracted.unreadable) {
     await store.createApplicant(
       { ...base, status: "needs_text", warnings: extracted.warnings },
-      { applicant_id: id, full_name: null, email: null, phone: null, links: [] },
+      { applicant_id: id, full_name: nameFromFilename(input.filename), email: null, phone: null, links: [], aliases: [] },
     );
     return (await store.getApplicant(id))!;
   }
@@ -101,7 +101,7 @@ export async function ingestFile(input: IngestInput): Promise<Applicant> {
 
 async function finishSeparation(base: Applicant, rawText: string, warnings: string[], isNew: boolean, nameOverride?: string | null) {
   const store = getStore();
-  const sep = separatePII(rawText, nameOverride);
+  const sep = separatePII(rawText, nameOverride, base.source_filename);
   const lines = toLines(sep.sanitizedLines);
   const tHash = textHash(lines);
   const w = [...warnings];
@@ -124,13 +124,33 @@ async function finishSeparation(base: Applicant, rawText: string, warnings: stri
     duplicate_of: duplicateOf,
     error: null,
   };
-  const pii: ApplicantPII = { applicant_id: base.id, ...sep.pii };
+  const pii: ApplicantPII = { applicant_id: base.id, ...sep.pii, aliases: sep.redactedTokens };
   if (isNew) await store.createApplicant({ ...base, ...patch, updated_at: now() }, pii);
   else {
     await store.updateApplicant(base.id, patch);
-    await store.updatePII(base.id, sep.pii);
+    await store.updatePII(base.id, { ...sep.pii, aliases: sep.redactedTokens });
   }
   return (await store.getApplicant(base.id))!;
+}
+
+/**
+ * Re-runs extraction and PII separation from the stored original, then re-scores.
+ * Overwrites sanitized lines, evaluations, briefs and unedited drafts; decisions and sends are untouched.
+ */
+export async function reprocessApplicant(id: string, nameOverride?: string | null) {
+  const store = getStore();
+  const a = await store.getApplicant(id);
+  if (!a) throw new IngestError("Applicant not found.", 404);
+  if (!a.storage_path || a.source_kind === "pasted") throw new IngestError("No stored original to reprocess.", 409);
+  const data = await store.readFile(a.storage_path);
+  if (!data) throw new IngestError("Stored original is missing.", 409);
+  const ex = await extractText(data, a.source_kind as "pdf" | "docx" | "txt");
+  if (ex.unreadable) {
+    await store.updateApplicant(id, { status: "needs_text", warnings: ex.warnings, lines: [] });
+    return store.getApplicant(id);
+  }
+  await finishSeparation(a, ex.text, ex.warnings, false, nameOverride);
+  return scoreApplicant(id);
 }
 
 /** Recovery path for scanned or unreadable files: the founder pastes the CV text. */
@@ -174,7 +194,15 @@ export async function scoreApplicant(id: string) {
   if (a.status === "needs_text") throw new IngestError("This file has no readable text yet. Paste the CV text first.", 409);
   if (!a.lines.length) throw new IngestError("No sanitized text to score.", 409);
   const pii = await store.getPII(id);
-  const guard = { full_name: pii?.full_name ?? null, email: pii?.email ?? null, phone: pii?.phone ?? null, links: pii?.links ?? [] };
+  // Fail closed: without a known name we cannot prove it was removed, so nothing goes to the AI.
+  if (!pii?.full_name) {
+    await store.updateApplicant(id, {
+      status: "failed",
+      error: "Name not detected. Add the candidate's name (edit name) so it can be removed before scoring.",
+    });
+    throw new IngestError("Name not detected. Add the candidate's name so it can be removed before scoring.", 422);
+  }
+  const guard = { full_name: pii.full_name, email: pii.email, phone: pii.phone, links: pii.links ?? [], aliases: pii.aliases ?? [] };
   const provider = getProvider();
 
   await store.updateApplicant(id, { status: "scoring", error: null });

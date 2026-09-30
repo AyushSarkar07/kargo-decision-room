@@ -71,6 +71,8 @@ export interface ApplicantPII {
   email: string | null;
   phone: string | null;
   links: string[];
+  /** Every name form removed from the CV; checked by the pre-AI guard. */
+  aliases?: string[];
 }
 
 export type Uncertainty = "low" | "medium" | "high";
