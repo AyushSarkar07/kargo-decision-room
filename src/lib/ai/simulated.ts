@@ -78,7 +78,7 @@ export class SimulatedProvider implements AIProvider {
   id = "simulated";
   live = false;
 
-  async score(lines: Line[], appliedRole: Role, guard: PIIGuard): Promise<ScoringOutput> {
+  async score(lines: Line[], appliedRole: Role | null, guard: PIIGuard): Promise<ScoringOutput> {
     const input = scoringInput(lines, appliedRole);
     assertNoPII(SCORING_SYSTEM + "\n" + input, guard);
     if (process.env.NODE_ENV === "test") outboundLog.push({ system: SCORING_SYSTEM, input });
@@ -124,9 +124,10 @@ export class SimulatedProvider implements AIProvider {
         `Ask: can you walk me through a specific time that shows ${gap.name.toLowerCase()}?`,
       ];
     };
-    const other: Role = args.appliedRole === "PM" ? "SPM" : "PM";
+    const first: Role = args.appliedRole ?? "PM";
+    const other: Role = first === "PM" ? "SPM" : "PM";
     return {
-      brief_applied: brief(args.appliedRole),
+      brief_applied: brief(first),
       brief_other: brief(other),
       invite: {
         subject: "Kargo: a conversation about the role",

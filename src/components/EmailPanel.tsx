@@ -106,6 +106,12 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
   }
 
   if (a.status !== "scored") return null;
+  if (a.role_confirmed === false)
+    return (
+      <section className="rounded-lg border border-line bg-card px-4 py-3.5 text-[12.5px] text-muted">
+        Decisions and emails open once you choose the role this person applied for (above the scores).
+      </section>
+    );
 
   return (
     <section className="space-y-4 xl:sticky xl:top-3 xl:max-h-[calc(100vh-24px)] xl:overflow-y-auto">

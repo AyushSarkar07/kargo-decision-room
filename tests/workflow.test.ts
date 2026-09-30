@@ -254,3 +254,38 @@ describe("uploads: formats, duplicates, unreadable files, injection", () => {
     for (const c of e.criteria) expect(c.evidence.every((x) => !a.injection_flags.includes(x.line_id))).toBe(true);
   });
 });
+
+describe("role not stated", () => {
+  beforeEach(() => {
+    freshStore();
+  });
+
+  it("scores both roles, keeps the applicant out of rankings and sends until a role is chosen", async () => {
+    const { getStore } = await import("@/lib/store");
+    const store = getStore();
+    const a = await ingestFile({ data: fixture("s06_cs_to_pm.txt"), filename: "s06.txt", role: "PM", roleConfirmed: false });
+    await scoreApplicant(a.id);
+    const evals = (await store.listEvaluations()).filter((e) => e.applicant_id === a.id);
+    expect(evals.map((e) => e.role).sort()).toEqual(["PM", "SPM"]);
+
+    let cands = await loadCandidates();
+    for (const role of ["PM", "SPM"] as const) {
+      const b = buildRoleBoard(role, cands);
+      expect(b.ranked.find((r) => r.candidate.applicant.id === a.id)).toBeUndefined();
+      expect(b.crossRole.find((r) => r.candidate.applicant.id === a.id)).toBeUndefined();
+      expect(b.roleNotStated.map((x) => x.candidate.applicant.id)).toEqual([a.id]);
+    }
+    // The scoring request told the model the role was not stated.
+    expect(outboundLog.some((r) => r.input.includes("The role applied for was not stated."))).toBe(true);
+
+    setTransportForTests(recordingTransport().t);
+    await store.setDecision({ applicant_id: a.id, decision: "invite", note: "", decided_at: new Date().toISOString() });
+    const inv = (await store.listDrafts()).find((d) => d.applicant_id === a.id && d.type === "invite")!;
+    await expect(sendDraft(inv.id, "inbox@example.org", testConfig())).rejects.toThrow(/Choose the role/);
+
+    await store.updateApplicant(a.id, { applied_role: "SPM", role_confirmed: true });
+    cands = await loadCandidates();
+    expect(buildRoleBoard("SPM", cands).ranked.map((r) => r.candidate.applicant.id)).toContain(a.id);
+    expect(buildRoleBoard("PM", cands).ranked.map((r) => r.candidate.applicant.id)).not.toContain(a.id);
+  });
+});

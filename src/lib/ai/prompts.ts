@@ -52,8 +52,9 @@ ${rubricBlock()}
 JOB-DESCRIPTION REQUIREMENTS (informational, not scored)
 ${requirementsBlock()}`);
 
-export function scoringInput(lines: Line[], appliedRole: Role) {
-  return `The candidate applied for: ${ROLE_LABEL[appliedRole]} (${appliedRole}). Score both roles regardless.
+export function scoringInput(lines: Line[], appliedRole: Role | null) {
+  const applied = appliedRole ? `The candidate applied for: ${ROLE_LABEL[appliedRole]} (${appliedRole}).` : "The role applied for was not stated.";
+  return `${applied} Score both roles regardless.
 
 <cv>
 ${lines.map((l) => `${l.id}: ${l.text}`).join("\n")}
@@ -68,16 +69,17 @@ BRIEFS: exactly three sentences each, one sentence per array item:
   1. Strongest fit: the single best-evidenced reason this person fits, citing the concrete evidence.
   2. Key uncertainty: the most important thing the evidence does not show (use Not evidenced criteria and high-uncertainty scores).
   3. Interview probe: one targeted question Arjun should ask, phrased as a question to the candidate.
-brief_applied is for the role they applied for; brief_other is for the other role.
+brief_applied is for the role they applied for; brief_other is for the other role. If the applied role is not stated, brief_applied is for PM and brief_other is for SPM.
 
 EMAILS: plain text, warm, specific to this candidate's actual work, under 180 words, signed "Arjun Mehta, Founder, Kargo".
 - Start with "Hi {{first_name}}," exactly. Never write a name or any other placeholder.
 - invite: thank them, name one specific thing from their work that stood out, and ask for a 30-minute call this week or next; ask them to reply with a few times that suit.
 - rejection: thank them, be honest that Kargo is not moving forward for this role right now, mention one genuine strength from their work, no scores or rubric language, no false promises.
-- Do not mention AI, scoring, rubrics, or automated review.`;
+- Do not mention AI, scoring, rubrics, or automated review.
+- If the applied role is not stated, do not name a specific role; say "the product role at Kargo".`;
 
 export function synthesisInput(opts: {
-  appliedRole: Role;
+  appliedRole: Role | null;
   summary: string;
   byRole: Record<Role, { ranking_score: number; coverage: number; criteria: (CriterionScore & { name: string })[] }>;
 }) {
@@ -93,12 +95,13 @@ ${e.criteria
   )
   .join("\n")}`;
   };
-  return `Applied role: ${ROLE_LABEL[opts.appliedRole]} (${opts.appliedRole}).
+  const first: Role = opts.appliedRole ?? "PM";
+  return `Applied role: ${opts.appliedRole ? `${ROLE_LABEL[opts.appliedRole]} (${opts.appliedRole})` : "not stated"}.
 Work summary: ${opts.summary}
 
 <evaluation>
-${roleBlock(opts.appliedRole)}
+${roleBlock(first)}
 
-${roleBlock(opts.appliedRole === "PM" ? "SPM" : "PM")}
+${roleBlock(first === "PM" ? "SPM" : "PM")}
 </evaluation>`;
 }

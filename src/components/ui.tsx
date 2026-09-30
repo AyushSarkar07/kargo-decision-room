@@ -38,6 +38,7 @@ const STATUS_TONE: Record<StatusLabel, Tone> = {
   "Simulated send": "warn",
   Delivered: "good",
   "Send failed": "bad",
+  "Role not stated": "warn",
 };
 
 export function StatusChip({ status }: { status: StatusLabel }) {

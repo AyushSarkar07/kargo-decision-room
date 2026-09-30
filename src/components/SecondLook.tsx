@@ -24,7 +24,7 @@ export function SecondLookView({ items, onOpen }: { items: SecondLookItem[]; onO
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="text-[14px] font-medium">{c.name ?? c.applicant.source_filename}</span>
-                    <Chip>applied {c.applicant.applied_role}</Chip>
+                    <Chip>{c.applicant.role_confirmed === false ? "role not stated" : `applied ${c.applicant.applied_role}`}</Chip>
                     {c.applicant.is_synthetic && <Chip>synthetic</Chip>}
                   </div>
                   <ul className="mt-1 space-y-0.5">

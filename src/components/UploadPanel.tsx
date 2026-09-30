@@ -6,10 +6,11 @@ import { api, ApiError } from "./api-client";
 import { Button, Chip, cx, SectionLabel, Spinner } from "./ui";
 
 type ItemState = "queued" | "uploading" | "scoring" | "done" | "needs_text" | "duplicate" | "failed";
+type UploadRole = Role | "unstated";
 interface Item {
   key: string;
   file: File;
-  role: Role | "";
+  role: UploadRole | "";
   state: ItemState;
   id?: string;
   existingId?: string;
@@ -36,7 +37,7 @@ export function UploadPanel({
   demo: boolean;
 }) {
   const [items, setItems] = useState<Item[]>([]);
-  const [defaultRole, setDefaultRole] = useState<Role | "">("");
+  const [defaultRole, setDefaultRole] = useState<UploadRole | "">("");
   const [running, setRunning] = useState(false);
   const [batchMs, setBatchMs] = useState<number | null>(null);
   const [drag, setDrag] = useState(false);
@@ -136,10 +137,11 @@ export function UploadPanel({
             <Button onClick={() => input.current?.click()}>Choose files</Button>
             <label className="flex items-center gap-1.5 text-[12.5px] text-ink-2">
               Default role for new files
-              <select value={defaultRole} onChange={(e) => setDefaultRole(e.target.value as Role)} className="rounded-md border border-line-strong bg-card px-2 py-1 text-[12.5px]">
+              <select value={defaultRole} onChange={(e) => setDefaultRole(e.target.value as UploadRole)} className="rounded-md border border-line-strong bg-card px-2 py-1 text-[12.5px]">
                 <option value="">Choose…</option>
                 <option value="PM">Product Manager</option>
                 <option value="SPM">Senior Product Manager</option>
+                <option value="unstated">Not stated</option>
               </select>
             </label>
           </div>
@@ -184,13 +186,14 @@ export function UploadPanel({
                     <select
                       value={it.role}
                       disabled={it.state !== "queued"}
-                      onChange={(e) => update(it.key, { role: e.target.value as Role })}
+                      onChange={(e) => update(it.key, { role: e.target.value as UploadRole })}
                       className={cx("rounded-md border bg-card px-2 py-1 text-[12px]", !it.role ? "border-warn" : "border-line-strong")}
                       aria-label={`Role for ${it.file.name}`}
                     >
                       <option value="">Role…</option>
                       <option value="PM">PM</option>
                       <option value="SPM">SPM</option>
+                      <option value="unstated">Not stated</option>
                     </select>
                     <ItemBadge s={it.state} />
                   </div>

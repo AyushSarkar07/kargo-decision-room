@@ -34,6 +34,8 @@ export interface Applicant {
   dataset: Dataset;
   is_synthetic: boolean;
   applied_role: Role;
+  /** false when neither the upload nor the CV said which role; applied_role is then a placeholder. */
+  role_confirmed: boolean;
   source_filename: string;
   source_kind: "pdf" | "docx" | "txt" | "pasted";
   file_hash: string;

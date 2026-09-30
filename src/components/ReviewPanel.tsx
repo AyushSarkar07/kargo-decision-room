@@ -55,7 +55,7 @@ export function ReviewPanel({
           <div className="min-w-0">
             <NameLine candidate={candidate} onChanged={onChanged} />
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[12px] text-muted">
-              <span>Applied for {roleName(a.applied_role)}</span>
+              <span>{a.role_confirmed === false ? "Role applied for not stated" : `Applied for ${roleName(a.applied_role)}`}</span>
               {row && <span>#{row.rank} of {board.ranked.length} for {role}</span>}
               {cross && <span className="text-accent">Viewing {role} fit · would rank #{cross.wouldRank}</span>}
               <a className="underline-offset-2 hover:underline" href={`/api/applicants/${a.id}/file`} target="_blank" rel="noreferrer">
@@ -72,6 +72,7 @@ export function ReviewPanel({
           </div>
         </div>
 
+        {a.role_confirmed === false && <RolePicker id={a.id} onChanged={onChanged} />}
         <div className="grid gap-4 px-5 py-4 sm:grid-cols-[auto_1fr]">
           <div className="flex items-end gap-5">
             <div>
@@ -226,6 +227,33 @@ export function ReviewPanel({
         )}
       </div>
     </section>
+  );
+}
+
+function RolePicker({ id, onChanged }: { id: string; onChanged: () => void }) {
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const set = async (role: Role) => {
+    setBusy(true);
+    setErr(null);
+    try {
+      await api(`/api/applicants/${id}/role`, { method: "POST", json: { role } });
+      onChanged();
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <div className="flex flex-wrap items-center gap-2 border-b border-warn/30 bg-warn-soft/60 px-5 py-2.5 text-[12.5px] text-warn">
+      <span>Neither the file nor the CV says which role this person applied for. Both scores are ready; choose one to rank them.</span>
+      <span className="ml-auto flex gap-1.5">
+        <Button disabled={busy} onClick={() => set("PM")}>Treat as PM applicant</Button>
+        <Button disabled={busy} onClick={() => set("SPM")}>Treat as SPM applicant</Button>
+      </span>
+      {err && <span className="w-full text-bad">{err}</span>}
+    </div>
   );
 }
 

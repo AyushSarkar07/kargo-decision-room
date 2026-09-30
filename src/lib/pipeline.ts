@@ -45,6 +45,8 @@ export interface IngestInput {
   role: Role;
   force?: boolean;
   isSynthetic?: boolean;
+  /** false when the role applied for is not known; the applicant is scored but not ranked until a role is chosen. */
+  roleConfirmed?: boolean;
 }
 
 /** Stores the file, extracts text, and separates identifying details. No AI call happens here. */
@@ -68,6 +70,7 @@ export async function ingestFile(input: IngestInput): Promise<Applicant> {
     dataset: store.kind === "supabase" ? "live" : "demo",
     is_synthetic: Boolean(input.isSynthetic),
     applied_role: input.role,
+    role_confirmed: input.roleConfirmed ?? true,
     source_filename: input.filename.slice(0, 200),
     source_kind: kind,
     file_hash: fileHash,
@@ -176,7 +179,8 @@ export async function scoreApplicant(id: string) {
 
   await store.updateApplicant(id, { status: "scoring", error: null });
   try {
-    const out = await provider.score(a.lines, a.applied_role, guard);
+    const appliedRole = a.role_confirmed === false ? null : a.applied_role;
+    const out = await provider.score(a.lines, appliedRole, guard);
     const flags = [...new Set([...a.injection_flags])];
     const evaluations: Evaluation[] = ROLES.map((role) => {
       const criteria = verifyCriteria(out.evaluations[role].criteria, a.lines, flags);
@@ -205,10 +209,10 @@ export async function scoreApplicant(id: string) {
       };
     };
     const byRole = { PM: named("PM"), SPM: named("SPM") };
-    const syn = await provider.synthesize({ appliedRole: a.applied_role, summary: out.work_evidence.summary, byRole }, guard);
+    const syn = await provider.synthesize({ appliedRole, summary: out.work_evidence.summary, byRole }, guard);
 
     const briefs: Brief[] = ROLES.map((role) => {
-      const raw = role === a.applied_role ? syn.brief_applied : syn.brief_other;
+      const raw = role === (appliedRole ?? "PM") ? syn.brief_applied : syn.brief_other;
       const ok = validBrief(raw);
       return {
         applicant_id: id,

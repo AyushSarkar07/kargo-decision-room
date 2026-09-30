@@ -63,6 +63,33 @@ export function CandidateList({
         </div>
       )}
 
+      {board.roleNotStated.length > 0 && (
+        <div className="rounded-lg border border-warn/30 bg-card">
+          <div className="border-b border-line px-3 py-2">
+            <div className="text-[12px] font-semibold text-ink-2">Role not stated ({board.roleNotStated.length})</div>
+            <div className="text-[11px] text-muted">Scored for both roles. Open one to choose PM or SPM; until then they are not ranked.</div>
+          </div>
+          <ul className="max-h-[340px] overflow-y-auto">
+            {board.roleNotStated.map((x) => (
+              <li key={x.candidate.applicant.id}>
+                <button
+                  onClick={() => onSelect(x.candidate.applicant.id)}
+                  className={cx("flex w-full items-center justify-between gap-2 border-b border-line/60 px-3 py-2 text-left last:border-0 hover:bg-paper", selectedId === x.candidate.applicant.id && "bg-accent-soft/60")}
+                >
+                  <span className="min-w-0">
+                    <span className="block truncate text-[13px] font-medium">{x.candidate.name ?? x.candidate.applicant.source_filename}</span>
+                    <span className="text-[11px] text-muted">
+                      {x.evaluation ? `would be #${x.wouldRank} for ${board.role}` : x.candidate.applicant.status.replace("_", " ")}
+                    </span>
+                  </span>
+                  {x.evaluation && <span className="tabular text-[13px] font-semibold">{x.evaluation.ranking_score.toFixed(1)}</span>}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {board.crossRole.length > 0 && (
         <div className="rounded-lg border border-line bg-card">
           <div className="border-b border-line px-3 py-2">

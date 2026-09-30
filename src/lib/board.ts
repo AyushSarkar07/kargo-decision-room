@@ -30,7 +30,11 @@ export type StatusLabel =
   | "Sent"
   | "Simulated send"
   | "Delivered"
-  | "Send failed";
+  | "Send failed"
+  | "Role not stated";
+
+/** Older records have no flag; treat them as confirmed. */
+export const roleConfirmed = (c: Candidate) => c.applicant.role_confirmed !== false;
 
 export function latestSend(c: Candidate): EmailSend | null {
   return [...c.sends].sort((a, b) => b.created_at.localeCompare(a.created_at))[0] ?? null;
@@ -49,6 +53,7 @@ export function statusOf(c: Candidate, inTopFive: boolean): StatusLabel {
     if (send.status === "delivered") return "Delivered";
     if (send.status === "failed" || send.status === "bounced") return "Send failed";
   }
+  if (!roleConfirmed(c)) return "Role not stated";
   const d = c.decision?.decision;
   if (d === "invite" || d === "reject") return "Draft ready";
   if (d === "hold") return "On hold";
@@ -78,6 +83,8 @@ export interface RoleBoard {
   ranked: RankedRow[];
   pending: Candidate[]; // applied for this role but not scored yet
   crossRole: { candidate: Candidate; evaluation: Evaluation; wouldRank: number }[];
+  /** Scored against both rubrics but the role applied for is unknown; shown with this role's score, never ranked. */
+  roleNotStated: { candidate: Candidate; evaluation: Evaluation | null; wouldRank: number | null }[];
 }
 
 const incompleteThreshold = rubric.missing_evidence_policy.incomplete_threshold;
@@ -96,17 +103,17 @@ function byScore(role: Role) {
 
 export function buildRoleBoard(role: Role, candidates: Candidate[]): RoleBoard {
   const scored = candidates.filter((c) => c.applicant.status === "scored" && c.evaluations[role]);
-  const applied = scored.filter((c) => c.applicant.applied_role === role).sort(byScore(role));
+  const applied = scored.filter((c) => roleConfirmed(c) && c.applicant.applied_role === role).sort(byScore(role));
   const ranked = applied.map((c, i) => {
     const evaluation = c.evaluations[role]!;
     const inTopFive = i < TOP_N;
     return { candidate: c, rank: i + 1, evaluation, inTopFive, incomplete: evaluation.coverage < incompleteThreshold, status: statusOf(c, inTopFive) };
   });
-  const pending = candidates.filter((c) => c.applicant.applied_role === role && c.applicant.status !== "scored");
+  const pending = candidates.filter((c) => roleConfirmed(c) && c.applicant.applied_role === role && c.applicant.status !== "scored");
   // Cross-role: applicants for the other role who would sit in this role's top five. Shown, never moved.
   const cutoff = ranked[TOP_N - 1]?.evaluation.ranking_score ?? 0;
   const crossRole = scored
-    .filter((c) => c.applicant.applied_role !== role)
+    .filter((c) => roleConfirmed(c) && c.applicant.applied_role !== role)
     .map((c) => {
       const evaluation = c.evaluations[role]!;
       const wouldRank = ranked.filter((r) => r.evaluation.ranking_score > evaluation.ranking_score).length + 1;
@@ -114,7 +121,15 @@ export function buildRoleBoard(role: Role, candidates: Candidate[]): RoleBoard {
     })
     .filter((x) => x.wouldRank <= TOP_N || x.evaluation.ranking_score >= cutoff)
     .sort((a, b) => b.evaluation.ranking_score - a.evaluation.ranking_score);
-  return { role, ranked, pending, crossRole };
+  const roleNotStated = candidates
+    .filter((c) => !roleConfirmed(c))
+    .map((c) => {
+      const evaluation = c.evaluations[role] ?? null;
+      const wouldRank = evaluation ? ranked.filter((r) => r.evaluation.ranking_score > evaluation.ranking_score).length + 1 : null;
+      return { candidate: c, evaluation, wouldRank };
+    })
+    .sort((a, b) => (b.evaluation?.ranking_score ?? -1) - (a.evaluation?.ranking_score ?? -1));
+  return { role, ranked, pending, crossRole, roleNotStated };
 }
 
 export interface SecondLookItem {
@@ -131,7 +146,7 @@ export function secondLook(candidates: Candidate[], boards: RoleBoard[]): Second
     if (a.status === "needs_text") reasons.push("File could not be read. Paste the CV text to score it.");
     if (a.status === "failed") reasons.push(`Processing failed: ${a.error ?? "unknown error"}`);
     if (a.status === "scored") {
-      const own = c.evaluations[a.applied_role];
+      const own = roleConfirmed(c) ? c.evaluations[a.applied_role] : undefined;
       const pm = c.evaluations.PM;
       const spm = c.evaluations.SPM;
       if (own && own.coverage < incompleteThreshold) reasons.push(`Incomplete evidence: ${own.coverage}% coverage for the role applied for.`);

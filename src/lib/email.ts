@@ -106,6 +106,7 @@ export async function sendDraft(draftId: string, expectedTo: string, cfg: AppCon
   if (!draft) throw new SendError("Draft not found.", 404);
   const applicant = await store.getApplicant(draft.applicant_id);
   if (!applicant || applicant.status !== "scored") throw new SendError("This applicant has not finished processing.", 409);
+  if (applicant.role_confirmed === false) throw new SendError("Choose the role this person applied for before sending.", 409);
   const decision = await store.getDecision(draft.applicant_id);
   const needed = draft.type === "invite" ? "invite" : "reject";
   if (decision?.decision !== needed)
