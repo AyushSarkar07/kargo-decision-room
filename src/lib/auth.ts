@@ -2,6 +2,7 @@ import "server-only";
 import { cookies } from "next/headers";
 import { createServerClient } from "@supabase/ssr";
 import { getConfig } from "./config";
+import { accessCodeEnabled, SESSION_COOKIE, verifySession } from "./access-code";
 
 export interface Session {
   email: string;
@@ -30,6 +31,10 @@ export async function getSession(): Promise<Session | null> {
   if (cfg.data === "local-demo") {
     if (process.env.VERCEL && process.env.ALLOW_DEMO_ON_DEPLOY !== "true") return null;
     return { email: "demo@localhost", demo: true };
+  }
+  if (accessCodeEnabled()) {
+    const jar = await cookies();
+    return verifySession(jar.get(SESSION_COOKIE)?.value) ? { email: "founder", demo: false } : null;
   }
   const supabase = await supabaseServer();
   const { data } = await supabase.auth.getUser();

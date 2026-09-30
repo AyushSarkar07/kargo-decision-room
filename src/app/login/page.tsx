@@ -1,51 +1,33 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { createBrowserClient } from "@supabase/ssr";
+import { accessCodeEnabled } from "@/lib/access-code";
+import { PasswordLogin } from "./PasswordLogin";
 
-export default function Login() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [busy, setBusy] = useState(false);
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+export const dynamic = "force-dynamic";
 
+export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  if (!accessCodeEnabled()) return <PasswordLogin />;
+  const { error } = await searchParams;
   return (
     <main className="flex min-h-screen items-center justify-center px-4">
-      <form
-        className="w-full max-w-sm rounded-lg border border-line bg-card p-6"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          if (!url || !key) return setError("Sign-in is not configured.");
-          setBusy(true);
-          setError(null);
-          const supabase = createBrowserClient(url, key);
-          const { error } = await supabase.auth.signInWithPassword({ email, password });
-          setBusy(false);
-          if (error) return setError(error.message);
-          router.replace("/");
-          router.refresh();
-        }}
-      >
+      <form action="/auth/code" method="post" className="w-full max-w-sm rounded-lg border border-line bg-card p-6">
         <div className="mb-5">
           <div className="text-[15px] font-semibold">Kargo</div>
           <div className="font-serif text-[20px] italic text-ink-2">The Decision Room</div>
         </div>
         <label className="block text-[12px] font-medium text-muted">
-          Email
-          <input type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} className="mt-1 w-full rounded-md border border-line-strong bg-card px-2.5 py-1.5 text-[14px] text-ink" />
+          Access code
+          <input
+            name="code"
+            required
+            autoFocus
+            autoComplete="current-password"
+            autoCapitalize="none"
+            spellCheck={false}
+            className="mt-1 w-full rounded-md border border-line-strong bg-card px-2.5 py-2 font-mono text-[15px] text-ink"
+          />
         </label>
-        <label className="mt-3 block text-[12px] font-medium text-muted">
-          Password
-          <input type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} className="mt-1 w-full rounded-md border border-line-strong bg-card px-2.5 py-1.5 text-[14px] text-ink" />
-        </label>
-        {error && <p className="mt-3 text-[12.5px] text-bad">{error}</p>}
-        <button disabled={busy} className="mt-5 w-full rounded-md bg-ink py-2 text-[13.5px] font-medium text-white disabled:opacity-50">
-          {busy ? "Signing in…" : "Sign in"}
-        </button>
-        <p className="mt-3 text-[11.5px] text-muted">Access is limited to the founder accounts configured for this workspace.</p>
+        {error && <p className="mt-3 text-[12.5px] text-bad">That code didn&apos;t match. Try again.</p>}
+        <button className="mt-5 w-full rounded-md bg-ink py-2 text-[13.5px] font-medium text-white">Enter</button>
+        <p className="mt-3 text-[11.5px] text-muted">You stay signed in on this device for 30 days.</p>
       </form>
     </main>
   );

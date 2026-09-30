@@ -43,7 +43,8 @@ export function getConfig(): AppConfig {
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
-  if (hasSupabase && founderEmails.length === 0) problems.push("FOUNDER_EMAILS is empty: nobody can sign in.");
+  const codeSignIn = Boolean(env("ACCESS_CODE") && env("SESSION_SECRET"));
+  if (hasSupabase && !codeSignIn && founderEmails.length === 0) problems.push("FOUNDER_EMAILS is empty: nobody can sign in.");
 
   return {
     data: hasSupabase ? "supabase" : "local-demo",
