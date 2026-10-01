@@ -1,0 +1,28 @@
+Kavya Menon
+kavya.menon@example.com | +91 90000 11101 | Pune | linkedin.com/in/kavya-menon-synthetic
+
+SUMMARY
+Product manager with three years in logistics SaaS, preceded by two years running export documentation at a freight forwarder.
+
+EXPERIENCE
+Product Manager | Shiplane Software (Series A, freight visibility SaaS), Pune | Mar 2023 – Present
+- Sole PM for the carrier booking and exception alerts product areas; no senior PM above, reporting to the CTO
+- Shipped 5 features in 14 months; killed 2 after four weeks when usage data showed fewer than 10% of accounts used them, and moved the team onto exception alerts instead
+- Exception alerts reduced support tickets about missed vessel cut-offs by 45% across 22 freight forwarder accounts within one quarter
+- Wrote and circulated the post-mortem after a 6-hour carrier API outage, ran the retrospective, and closed all 7 follow-up actions
+- Spent two days a month inside customer operations rooms in Nhava Sheva to watch how coordinators actually handle delays
+- Decided to delay a customer-requested dashboard in favour of fixing duplicate shipment records; churn in the affected segment fell from 9% to 4% over two quarters
+
+Associate Product Manager | Shiplane Software, Pune | Jul 2021 – Feb 2023
+- Built a shared spreadsheet tracker for onboarding blockers after noticing the implementation team lost track of customer data issues; adopted by all 6 implementation managers within a month and later turned into an in-app checklist
+- Ran 30 discovery calls with documentation executives
+
+Export Documentation Executive | Coastal Cargo Forwarders, Mumbai | Jun 2019 – Jun 2021
+- Managed shipping bills, bills of lading and certificates of origin for 150+ export shipments monthly
+- Coordinated daily with CHAs and shipping lines on customs holds and amendments
+
+EDUCATION
+B.Com, Symbiosis College, Pune, 2019
+
+SKILLS
+JIRA, SQL, Mixpanel, Figma

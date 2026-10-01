@@ -1,26 +1,55 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-paper: #f2ede4;
+  --color-card: #ffffff;
+  --color-line: #ddd4c4;
+  --color-line-strong: #c4b9a5;
+  --color-ink: #14213d;
+  --color-ink-2: #2b3653;
+  --color-muted: #525a70;
+  --color-accent: #d2691e;
+  --color-accent-soft: #fbeee3;
+  --color-good: #2f7a57;
+  --color-good-soft: #e6f2ea;
+  --color-warn: #a86a12;
+  --color-warn-soft: #fbf1dc;
+  --color-bad: #b0412f;
+  --color-bad-soft: #f8e6e2;
+  --color-info: #2f5d9a;
+  --color-info-soft: #e7eef8;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html {
+  /* A deliberately light-only internal tool: keep native controls light under OS dark mode too. */
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  font-feature-settings: "cv11", "ss01";
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
 }

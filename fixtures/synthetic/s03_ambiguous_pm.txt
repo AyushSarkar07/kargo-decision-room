@@ -1,0 +1,15 @@
+Nisha Varghese
+nisha.v@example.com | +91 90000 11103
+
+EXPERIENCE
+Operations Supervisor | Metro Warehousing Ltd, Bhiwandi | 2019 – 2023
+- Warehouse inbound and dispatch for FMCG clients
+- Team of 14 pickers and loaders
+
+Product Analyst | Loadbay (freight marketplace startup), Mumbai | 2023 – Present
+- Working on the trucker app
+- Requirements, testing, release notes
+- Some customer calls
+
+SKILLS
+SQL, Excel, Jira

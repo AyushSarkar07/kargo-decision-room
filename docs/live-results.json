@@ -1,0 +1,205 @@
+{
+  "started_at": "2026-09-29T10:23:26.871Z",
+  "config": {
+    "data": "supabase",
+    "ai": "gemini",
+    "email": "resend-test",
+    "model": "gemini-3.8-flash"
+  },
+  "three_applicants_ms": {
+    "strong_pm": 19539,
+    "weak_spm": 15191,
+    "ambiguous": 14784
+  },
+  "three_applicants": {
+    "strong_pm": {
+      "PM": {
+        "ranking_score": 95,
+        "coverage": 100,
+        "not_evidenced": [],
+        "evidence_items": 11
+      },
+      "SPM": {
+        "ranking_score": 90,
+        "coverage": 100,
+        "not_evidenced": [],
+        "evidence_items": 8
+      }
+    },
+    "strong_pm_brief_generated_by": "gemini-3.8-flash",
+    "strong_pm_drafts_generated_by": [
+      "gemini-3.8-flash",
+      "gemini-3.8-flash"
+    ],
+    "weak_spm": {
+      "PM": {
+        "ranking_score": 6.3,
+        "coverage": 80,
+        "not_evidenced": [
+          "owns_setbacks"
+        ],
+        "evidence_items": 1
+      },
+      "SPM": {
+        "ranking_score": 5,
+        "coverage": 80,
+        "not_evidenced": [
+          "owns_setbacks"
+        ],
+        "evidence_items": 1
+      }
+    },
+    "weak_spm_brief_generated_by": "gemini-3.8-flash",
+    "weak_spm_drafts_generated_by": [
+      "gemini-3.8-flash",
+      "gemini-3.8-flash"
+    ],
+    "ambiguous": {
+      "PM": {
+        "ranking_score": 25,
+        "coverage": 40,
+        "not_evidenced": [
+          "unasked_fixes",
+          "owns_setbacks",
+          "user_outcomes"
+        ],
+        "evidence_items": 4
+      },
+      "SPM": {
+        "ranking_score": 23.8,
+        "coverage": 45,
+        "not_evidenced": [
+          "unasked_fixes",
+          "owns_setbacks",
+          "user_outcomes"
+        ],
+        "evidence_items": 4
+      }
+    },
+    "ambiguous_brief_generated_by": "gemini-3.8-flash",
+    "ambiguous_drafts_generated_by": [
+      "gemini-3.8-flash",
+      "gemini-3.8-flash"
+    ]
+  },
+  "gemini_requests_checked_for_pii": 6,
+  "send": {
+    "ms": 1386,
+    "status": "accepted",
+    "provider_message_id": "01a0ecb1-a02b-76e9-897d-ef689b8ddb3a",
+    "to": "delivered@resend.dev",
+    "redirected_from_candidate": true
+  },
+  "calibration": {
+    "ms": 92071,
+    "scored_by": "gemini-3.8-flash",
+    "scored": 8,
+    "failed": [],
+    "concordance": {
+      "PM": {
+        "pairs": 15,
+        "concordant": 15,
+        "ties": 0,
+        "discordant": []
+      },
+      "SPM": {
+        "pairs": 15,
+        "concordant": 13,
+        "ties": 0,
+        "discordant": [
+          {
+            "higher": "aditya",
+            "other": "vikram",
+            "higherScore": 21.3,
+            "otherScore": 26.3
+          },
+          {
+            "higher": "aditya",
+            "other": "preetham",
+            "higherScore": 21.3,
+            "otherScore": 25
+          }
+        ]
+      }
+    },
+    "scores": [
+      {
+        "hire": "rohan",
+        "group": "higher",
+        "PM": 76.3,
+        "SPM": 75,
+        "PM_cov": 100,
+        "SPM_cov": 100
+      },
+      {
+        "hire": "sunita",
+        "group": "higher",
+        "PM": 75,
+        "SPM": 71.3,
+        "PM_cov": 100,
+        "SPM_cov": 100
+      },
+      {
+        "hire": "vikram",
+        "group": "other",
+        "PM": 32.5,
+        "SPM": 26.3,
+        "PM_cov": 80,
+        "SPM_cov": 80
+      },
+      {
+        "hire": "aditya",
+        "group": "higher",
+        "PM": 41.3,
+        "SPM": 21.3,
+        "PM_cov": 100,
+        "SPM_cov": 100
+      },
+      {
+        "hire": "preetham",
+        "group": "other",
+        "PM": 25,
+        "SPM": 25,
+        "PM_cov": 100,
+        "SPM_cov": 100
+      },
+      {
+        "hire": "meghna",
+        "group": "higher",
+        "PM": 68.8,
+        "SPM": 55,
+        "PM_cov": 100,
+        "SPM_cov": 100
+      },
+      {
+        "hire": "lavanya",
+        "group": "higher",
+        "PM": 95,
+        "SPM": 85,
+        "PM_cov": 100,
+        "SPM_cov": 100
+      },
+      {
+        "hire": "rahul",
+        "group": "other",
+        "PM": 15,
+        "SPM": 18.8,
+        "PM_cov": 80,
+        "SPM_cov": 80
+      }
+    ]
+  },
+  "two_new_cvs": {
+    "total_ms": 35984,
+    "steps": {
+      "uploaded_s12_new_pm.txt": 686,
+      "scored_s12_new_pm.txt": 17762,
+      "uploaded_s13_new_spm.txt": 18523,
+      "scored_s13_new_spm.txt": 34046,
+      "send_accepted": 35984
+    },
+    "send_status": "accepted",
+    "provider_message_id": "01a0ecb3-95f4-756c-9860-2682f1bce5bd"
+  },
+  "finished_at": "2026-09-29T10:26:27.589Z"
+}

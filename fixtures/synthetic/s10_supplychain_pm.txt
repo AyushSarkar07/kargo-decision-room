@@ -1,0 +1,15 @@
+Tanvi Kulkarni
+tanvi.kulkarni@example.com | +91 90000 11110 | Nagpur
+
+EXPERIENCE
+Product Manager | Routeworks (supply chain planning SaaS), Pune | 2023 – Present
+- Owns the transporter allocation module used by 40 manufacturers
+- Shipped carrier scorecards; late pickups for pilot customers fell 20%
+- After a failed rollout to one plant, wrote the root cause note and changed the rollout checklist, now used for every go-live
+
+Supply Chain Planner | Indo Agro Foods, Nagpur | 2020 – 2023
+- Planned outbound dispatch for 300+ loads a month and handled transporter exceptions
+- Built a daily delay tracker in Excel that the plant logistics team adopted as its morning review
+
+EDUCATION
+B.E. Industrial, 2020

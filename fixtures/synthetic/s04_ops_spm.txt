@@ -1,0 +1,23 @@
+Farhan Qureshi
+farhan.qureshi@example.com | +91 90000 11104 | Mumbai | github.com/farhanq-synthetic
+
+SUMMARY
+Senior product manager for integration platforms, with an early career in port operations.
+
+EXPERIENCE
+Senior Product Manager | Harbourgrid (Series B, logistics data platform), Mumbai | Apr 2021 – Present
+- Owned the carrier and port-portal integration layer with no product layer above; reported to the CEO
+- Decided to build a configurable EDI mapping tool instead of one-off integrations; new carrier onboarding time fell from 6 weeks to 9 days and unblocked 3 stalled enterprise deals
+- Stopped a half-built ERP connector after two design partners churned for unrelated reasons; wrote the decision memo and moved the team to port-portal reliability
+- Introduced a data-quality scorecard for integrations after noticing support could not tell which feeds were stale; adopted by support, sales and engineering, and now reviewed weekly
+- Integration-related support tickets fell 38% across 60+ customer accounts in a year
+
+Product Manager | Harbourgrid, Mumbai | Jan 2019 – Mar 2021
+- Shipped the first container tracking API and wrote its public documentation
+
+Terminal Operations Executive | Western Gateway Terminals, JNPT | 2015 – 2018
+- Handled berth planning inputs, DO releases and container detention disputes for 40 shipping line clients
+- Coordinated with customs and CFS operators on held containers
+
+EDUCATION
+B.E. Mechanical, 2015
