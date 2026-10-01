@@ -59,10 +59,11 @@ export function ReviewPanel({
       <div className="rounded-lg border border-line bg-card">
         <div className="flex flex-wrap items-start justify-between gap-3 border-b border-line px-5 py-4">
           <div className="min-w-0">
-            <NameLine candidate={candidate} onChanged={onChanged} />
+            {/* Inside the profile pane the name and role are already in the pane header. */}
+            {(view === "all" || !candidate.name) && <NameLine candidate={candidate} onChanged={onChanged} />}
             <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted">
-              <span>{a.role_confirmed === false ? "Role applied for not stated" : `Applied for ${roleName(a.applied_role)}`}</span>
-              {row && <span>#{row.rank} of {board.ranked.length} for {role}</span>}
+              {view === "all" && <span>{a.role_confirmed === false ? "Role applied for not stated" : `Applied for ${roleName(a.applied_role)}`}</span>}
+              {view === "all" && row && <span>#{row.rank} of {board.ranked.length} for {role}</span>}
               {cross && <span className="text-accent">Viewing {role} fit · would rank #{cross.wouldRank}</span>}
               <a className="underline-offset-2 hover:underline" href={`/api/applicants/${a.id}/file`} target="_blank" rel="noreferrer">
                 Open original CV

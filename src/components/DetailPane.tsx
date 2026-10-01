@@ -5,6 +5,7 @@ import type { PublicConfig } from "@/lib/config";
 import type { Role } from "@/lib/rubric";
 import { EmailPanel } from "./EmailPanel";
 import { ReviewPanel } from "./ReviewPanel";
+import { api } from "./api-client";
 import { cx, roleName, StatusChip } from "./ui";
 
 type View = "overview" | "evidence" | "decide";
@@ -44,7 +45,10 @@ export function DetailPane({
             <button onClick={onClose} className="mb-1 text-[14px] font-medium text-muted hover:text-ink">
               ← All {role === "PM" ? "Product Manager" : "Senior PM"} candidates
             </button>
-            <h2 className="truncate text-[26px] font-semibold leading-tight tracking-tight">{candidate.name ?? candidate.applicant.source_filename}</h2>
+            <h2 className="truncate text-[26px] font-semibold leading-tight tracking-tight">
+              {candidate.name ?? candidate.applicant.source_filename}
+              {candidate.name && <EditName candidate={candidate} onChanged={onChanged} />}
+            </h2>
             <p className="mt-0.5 text-[14px] text-muted">
               {candidate.applicant.role_confirmed === false ? "Role applied for not stated" : `Applied for ${roleName(candidate.applicant.applied_role)}`}
               {row && ` · #${row.rank} of ${board.ranked.length} for ${role}`}
@@ -96,5 +100,28 @@ export function DetailPane({
         )}
       </div>
     </section>
+  );
+}
+
+function EditName({ candidate, onChanged }: { candidate: Candidate; onChanged: () => void }) {
+  const [busy, setBusy] = useState(false);
+  return (
+    <button
+      disabled={busy}
+      className="ml-2 align-middle text-[13px] font-normal text-muted underline-offset-2 hover:underline"
+      onClick={async () => {
+        const next = window.prompt("Candidate's full name (kept private; removed before any AI call)", candidate.name ?? "");
+        if (!next || next.trim() === candidate.name) return;
+        setBusy(true);
+        try {
+          await api(`/api/applicants/${candidate.applicant.id}/pii`, { method: "PATCH", json: { full_name: next.trim() } });
+          onChanged();
+        } finally {
+          setBusy(false);
+        }
+      }}
+    >
+      {busy ? "saving…" : "edit name"}
+    </button>
   );
 }
