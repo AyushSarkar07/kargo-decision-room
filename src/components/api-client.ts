@@ -4,7 +4,7 @@ import type { PublicConfig } from "@/lib/config";
 
 export interface AppState {
   config: PublicConfig;
-  session: { email: string; demo: boolean };
+  session: { email: string; demo: boolean; open?: boolean };
   rubricVersion: string;
   candidates: Candidate[];
 }

@@ -44,7 +44,7 @@ export const ScoringOut = z.object({
 });
 export type ScoringOutput = z.infer<typeof ScoringOut>;
 
-const Email = z.object({ subject: z.string().min(3).max(140), body: z.string().min(40).max(2500) });
+const Email = z.object({ subject: z.string().min(3).max(140), body: z.string().min(40).max(2500), personal_detail_id: z.string().max(8) });
 
 export const SynthesisOut = z.object({
   brief_applied: z.array(z.string().min(10).max(320)).length(3),

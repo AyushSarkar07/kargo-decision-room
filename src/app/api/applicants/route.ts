@@ -1,10 +1,15 @@
 import { handler } from "@/lib/api";
+import { MAX_OPEN_APPLICANTS, openAccess } from "@/lib/access-code";
+import { getStore } from "@/lib/store";
 import { IngestError, ingestFile } from "@/lib/pipeline";
 import type { Role } from "@/lib/rubric";
 
 export const maxDuration = 60;
 
 export const POST = handler(async (req) => {
+  // Without sign-in, cap total uploads so a stranger cannot run up the AI bill.
+  if (openAccess() && (await getStore().listApplicants()).length >= MAX_OPEN_APPLICANTS)
+    throw new IngestError(`Upload limit reached (${MAX_OPEN_APPLICANTS} applicants) while the app is open to anyone.`, 429);
   const form = await req.formData();
   const file = form.get("file");
   const roleIn = String(form.get("role") ?? "");

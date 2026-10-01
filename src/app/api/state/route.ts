@@ -6,7 +6,7 @@ export const dynamic = "force-dynamic";
 
 export const GET = handler(async (_req, _p, session) => ({
   config: publicConfig(),
-  session: { email: session.email, demo: session.demo },
+  session: { email: session.email, demo: session.demo, open: Boolean(session.open) },
   rubricVersion: RUBRIC_VERSION,
   candidates: await loadCandidates(),
 }));

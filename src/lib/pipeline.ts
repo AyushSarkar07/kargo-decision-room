@@ -11,6 +11,7 @@ import { GeminiProvider } from "./ai/gemini";
 import { SimulatedProvider } from "./ai/simulated";
 import type { AIProvider } from "./ai/provider";
 import { validBrief, validEmailBody, verifyCriteria } from "./ai/verify";
+import { insertDetail, isPersonalised, pickDetails } from "./ai/personalise";
 
 let providerOverride: AIProvider | null = null;
 export function setProviderForTests(p: AIProvider | null) {
@@ -243,7 +244,7 @@ export async function scoreApplicant(id: string) {
       };
     };
     const byRole = { PM: named("PM"), SPM: named("SPM") };
-    const syn = await provider.synthesize({ appliedRole, summary: out.work_evidence.summary, byRole }, guard);
+    const { syn, drafts } = await synthesizePersonal(provider, id, appliedRole, out.work_evidence.summary, byRole, guard);
 
     const briefs: Brief[] = ROLES.map((role) => {
       const raw = role === (appliedRole ?? "PM") ? syn.brief_applied : syn.brief_other;
@@ -255,22 +256,6 @@ export async function scoreApplicant(id: string) {
         generated_by: ok ? provider.id : "template-fallback",
         rubric_version: RUBRIC_VERSION,
         created_at: now(),
-      };
-    });
-
-    const drafts: EmailDraft[] = (["invite", "rejection"] as const).map((type) => {
-      const gen = syn[type];
-      const ok = validEmailBody(gen.body);
-      return {
-        id: randomUUID(),
-        applicant_id: id,
-        type,
-        subject: ok ? gen.subject : FALLBACK_EMAIL[type].subject,
-        body: ok ? gen.body : FALLBACK_EMAIL[type].body,
-        edited: false,
-        generated_by: ok ? provider.id : "template-fallback",
-        status: "draft",
-        updated_at: now(),
       };
     });
 
@@ -287,6 +272,99 @@ export async function scoreApplicant(id: string) {
     throw e;
   }
   return store.getApplicant(id);
+}
+
+type ByRole = Parameters<AIProvider["synthesize"]>[0]["byRole"];
+
+/**
+ * Writes the brief and both email drafts. Each email must use one verified, specific detail from
+ * the person's CV: checked in code, retried once with feedback, then a sentence quoting their own
+ * CV line is inserted. Returns drafts tagged with how personalisation was achieved.
+ */
+async function synthesizePersonal(
+  provider: AIProvider,
+  id: string,
+  appliedRole: Role | null,
+  summary: string,
+  byRole: ByRole,
+  guard: Parameters<AIProvider["synthesize"]>[1],
+) {
+  const first: Role = appliedRole ?? "PM";
+  const details = pickDetails([...byRole[first].criteria, ...byRole[first === "PM" ? "SPM" : "PM"].criteria]);
+  let syn = await provider.synthesize({ appliedRole, summary, byRole, details }, guard);
+  const failing = (x: typeof syn) =>
+    (["invite", "rejection"] as const).filter((t) => !validEmailBody(x[t].body) || !isPersonalised(x[t].body, x[t].personal_detail_id, details));
+  let retried = false;
+  if (failing(syn).length) {
+    retried = true;
+    const again = await provider.synthesize(
+      {
+        appliedRole,
+        summary,
+        byRole,
+        details,
+        feedback: `The ${failing(syn).join(" and ")} email${failing(syn).length > 1 ? "s were" : " was"} not specific enough. Each email must clearly mention the specific nouns or numbers of the item you name in personal_detail_id.`,
+      },
+      guard,
+    );
+    // Keep whichever version of each email passes.
+    syn = {
+      ...again,
+      invite: failing(again).includes("invite") && !failing(syn).includes("invite") ? syn.invite : again.invite,
+      rejection: failing(again).includes("rejection") && !failing(syn).includes("rejection") ? syn.rejection : again.rejection,
+    };
+  }
+  const stillFailing = failing(syn);
+  const drafts: EmailDraft[] = (["invite", "rejection"] as const).map((type, i) => {
+    const gen = syn[type];
+    const valid = validEmailBody(gen.body);
+    let body = valid ? gen.body : FALLBACK_EMAIL[type].body;
+    let generatedBy = valid ? provider.id : "template-fallback";
+    if (stillFailing.includes(type) && details.length) {
+      body = insertDetail(body, details[Math.min(i, details.length - 1)], type);
+      generatedBy = `${generatedBy}+cv-detail`;
+    } else if (retried && valid) {
+      generatedBy = `${provider.id} (retried for specificity)`;
+    }
+    return {
+      id: randomUUID(),
+      applicant_id: id,
+      type,
+      subject: valid ? gen.subject : FALLBACK_EMAIL[type].subject,
+      body,
+      edited: false,
+      generated_by: generatedBy,
+      status: "draft",
+      updated_at: now(),
+    };
+  });
+  return { syn, drafts };
+}
+
+/**
+ * Rewrites the two email drafts from the stored evaluations without re-scoring.
+ * Edited or sent drafts are never replaced.
+ */
+export async function redraftEmails(id: string) {
+  const store = getStore();
+  const a = await store.getApplicant(id);
+  if (!a || a.status !== "scored") throw new IngestError("Only scored applicants can be redrafted.", 409);
+  const pii = await store.getPII(id);
+  if (!pii?.full_name) throw new IngestError("Name not detected. Add the candidate's name first.", 422);
+  const evals = (await store.listEvaluations()).filter((e) => e.applicant_id === id);
+  const named = (role: Role) => {
+    const e = evals.find((x) => x.role === role)!;
+    return {
+      ranking_score: e.ranking_score,
+      coverage: e.coverage,
+      criteria: e.criteria.map((c) => ({ ...c, name: rubric.criteria.find((r) => r.id === c.criterion_id)!.name })),
+    };
+  };
+  const appliedRole = a.role_confirmed === false ? null : a.applied_role;
+  const guard = { full_name: pii.full_name, email: pii.email, phone: pii.phone, links: pii.links ?? [], aliases: pii.aliases ?? [] };
+  const { drafts } = await synthesizePersonal(getProvider(), id, appliedRole, a.work_evidence?.summary ?? "", { PM: named("PM"), SPM: named("SPM") }, guard);
+  await store.saveGeneratedDrafts(drafts);
+  return drafts.map((d) => ({ type: d.type, generated_by: d.generated_by }));
 }
 
 export { otherRole };

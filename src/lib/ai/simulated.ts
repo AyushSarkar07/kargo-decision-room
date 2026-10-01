@@ -131,11 +131,13 @@ export class SimulatedProvider implements AIProvider {
       brief_other: brief(other),
       invite: {
         subject: "Kargo: a conversation about the role",
-        body: "Hi {{first_name}},\n\nThank you for applying to Kargo. Your background stood out and I would like to talk. Would you have 30 minutes this week or next? Reply with a few times that suit you.\n\n[Simulated draft. Edit before sending.]\n\nArjun Mehta, Founder, Kargo",
+        personal_detail_id: args.details?.[0]?.id ?? "none",
+        body: `Hi {{first_name}},\n\nThank you for applying to Kargo.${args.details?.[0] ? ` I noticed this in your application: "${args.details[0].text}".` : ""} I would like to talk. Would you have 30 minutes this week or next? Reply with a few times that suit you.\n\n[Simulated draft. Edit before sending.]\n\nArjun Mehta, Founder, Kargo`,
       },
       rejection: {
         subject: "Your application to Kargo",
-        body: "Hi {{first_name}},\n\nThank you for applying to Kargo and for the time you put into your application. We are not moving forward for this role right now. I appreciated reading about your work and wish you the best.\n\n[Simulated draft. Edit before sending.]\n\nArjun Mehta, Founder, Kargo",
+        personal_detail_id: args.details?.[1]?.id ?? args.details?.[0]?.id ?? "none",
+        body: `Hi {{first_name}},\n\nThank you for applying to Kargo and for the time you put into your application. We are not moving forward for this role right now.${(args.details?.[1] ?? args.details?.[0]) ? ` I appreciated reading this: "${(args.details[1] ?? args.details[0]).text}".` : ""} I wish you the best.\n\n[Simulated draft. Edit before sending.]\n\nArjun Mehta, Founder, Kargo`,
       },
     };
   }

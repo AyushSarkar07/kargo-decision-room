@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
-import { accessCodeEnabled, SESSION_COOKIE, verifySession } from "@/lib/access-code";
+import { accessCodeEnabled, openAccess, SESSION_COOKIE, verifySession } from "@/lib/access-code";
 
 // Refreshes the Supabase session cookie and sends signed-out visitors to /login.
 // Every API route and server action also checks the session itself.
@@ -10,6 +10,7 @@ export async function proxy(request: NextRequest) {
   // Same rule as getConfig(): live mode needs all three Supabase values; otherwise the app is in demo mode.
   if (!url || !key || !process.env.SUPABASE_SERVICE_ROLE_KEY) return NextResponse.next();
   const path = request.nextUrl.pathname;
+  if (openAccess()) return path.startsWith("/login") ? NextResponse.redirect(new URL("/", request.url)) : NextResponse.next();
 
   // Access-code sign-in: a signed cookie, checked locally.
   if (accessCodeEnabled()) {

@@ -1,9 +1,11 @@
-import { accessCodeEnabled } from "@/lib/access-code";
+import { redirect } from "next/navigation";
+import { accessCodeEnabled, openAccess } from "@/lib/access-code";
 import { PasswordLogin } from "./PasswordLogin";
 
 export const dynamic = "force-dynamic";
 
 export default async function Login({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
+  if (openAccess()) redirect("/");
   if (!accessCodeEnabled()) return <PasswordLogin />;
   const { error } = await searchParams;
   return (

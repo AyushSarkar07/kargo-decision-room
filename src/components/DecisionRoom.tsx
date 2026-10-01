@@ -104,8 +104,12 @@ export function DecisionRoom() {
                 Show synthetic ({synthCount})
               </label>
             )}
-            <span>{state.session.demo ? "Demo session" : state.session.email}</span>
-            {!state.session.demo && (
+            {state.session.open ? (
+              <Chip tone="warn" title="No sign-in: anyone with the link can view and act. Fictional data only.">Open access</Chip>
+            ) : (
+              <span>{state.session.demo ? "Demo session" : state.session.email}</span>
+            )}
+            {!state.session.demo && !state.session.open && (
               <form action="/auth/signout" method="post">
                 <button className="underline-offset-2 hover:underline">Sign out</button>
               </form>

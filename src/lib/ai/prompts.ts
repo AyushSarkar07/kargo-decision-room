@@ -71,16 +71,19 @@ BRIEFS: exactly three sentences each, one sentence per array item:
   3. Interview probe: one targeted question Arjun should ask, phrased as a question to the candidate.
 brief_applied is for the role they applied for; brief_other is for the other role. If the applied role is not stated, brief_applied is for PM and brief_other is for SPM.
 
-EMAILS: plain text, warm, specific to this candidate's actual work, under 180 words, signed "Arjun Mehta, Founder, Kargo".
+EMAILS: plain text, warm, under 180 words, signed "Arjun Mehta, Founder, Kargo".
 - Start with "Hi {{first_name}}," exactly. Never write a name or any other placeholder.
-- invite: thank them, name one specific thing from their work that stood out, and ask for a 30-minute call this week or next; ask them to reply with a few times that suit.
-- rejection: thank them, be honest that Kargo is not moving forward for this role right now, mention one genuine strength from their work, no scores or rubric language, no false promises.
+- PERSONALISATION (required): each email must refer to one item from <specific_details> concretely, keeping its specific nouns and numbers (for example "had 30 colleagues using it within the first month", not "your impressive experience"). Set personal_detail_id to that item's id (e.g. "D2"). Use different items for the invite and the rejection when more than one is available. Never use generic praise such as "extensive background", "impressive experience", or "caught my attention" without the specific detail. If <specific_details> is empty, refer to a concrete role or domain from the work summary and set personal_detail_id to "none".
+- invite: thank them, say what specifically stood out (the detail), and ask for a 30-minute call this week or next; ask them to reply with a few times that suit.
+- rejection: thank them, be honest that Kargo is not moving forward for this role right now, name the specific thing you appreciated (the detail), keep it brief and kind. Do not explain what Kargo is looking for, list gaps, or use scores or rubric language. No false promises.
 - Do not mention AI, scoring, rubrics, or automated review.
 - If the applied role is not stated, do not name a specific role; say "the product role at Kargo".`;
 
 export function synthesisInput(opts: {
   appliedRole: Role | null;
   summary: string;
+  details?: { id: string; text: string }[];
+  feedback?: string;
   byRole: Record<Role, { ranking_score: number; coverage: number; criteria: (CriterionScore & { name: string })[] }>;
 }) {
   const roleBlock = (r: Role) => {
@@ -103,5 +106,9 @@ Work summary: ${opts.summary}
 ${roleBlock(first)}
 
 ${roleBlock(first === "PM" ? "SPM" : "PM")}
-</evaluation>`;
+</evaluation>
+
+<specific_details>
+${(opts.details ?? []).map((d) => `${d.id}: "${d.text}"`).join("\n")}
+</specific_details>${opts.feedback ? `\n\nREVISION NEEDED: ${opts.feedback}` : ""}`;
 }
