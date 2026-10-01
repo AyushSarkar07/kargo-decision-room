@@ -132,12 +132,12 @@ export function UploadPanel({
           className={cx("rounded-lg border-2 border-dashed bg-card px-6 py-8 text-center", drag ? "border-accent bg-accent-soft/40" : "border-line-strong")}
         >
           <p className="font-serif text-[18px]">Drop CVs here</p>
-          <p className="mt-1 text-[12.5px] text-muted">PDF, DOCX, or TXT, up to 8 MB each. Choose the role each person applied for.</p>
+          <p className="mt-1 text-[13.5px] text-muted">PDF, DOCX, or TXT, up to 8 MB each. Choose the role each person applied for.</p>
           <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
             <Button onClick={() => input.current?.click()}>Choose files</Button>
-            <label className="flex items-center gap-1.5 text-[12.5px] text-ink-2">
+            <label className="flex items-center gap-1.5 text-[13.5px] text-ink-2">
               Default role for new files
-              <select value={defaultRole} onChange={(e) => setDefaultRole(e.target.value as UploadRole)} className="rounded-md border border-line-strong bg-card px-2 py-1 text-[12.5px]">
+              <select value={defaultRole} onChange={(e) => setDefaultRole(e.target.value as UploadRole)} className="rounded-md border border-line-strong bg-card px-2 py-1 text-[13.5px]">
                 <option value="">Choose…</option>
                 <option value="PM">Product Manager</option>
                 <option value="SPM">Senior Product Manager</option>
@@ -151,7 +151,7 @@ export function UploadPanel({
         {items.length > 0 && (
           <div className="rounded-lg border border-line bg-card">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line px-4 py-2.5">
-              <div className="text-[12.5px] text-ink-2">
+              <div className="text-[13.5px] text-ink-2">
                 {items.length} files · {done} finished
                 {counts.done ? ` · ${counts.done} scored` : ""}
                 {counts.needs_text ? ` · ${counts.needs_text} need text` : ""}
@@ -160,7 +160,7 @@ export function UploadPanel({
                 {batchMs !== null && !running && <span className="text-muted"> · batch took {(batchMs / 1000).toFixed(1)}s</span>}
               </div>
               <div className="flex items-center gap-2">
-                {missingRole && <span className="text-[11.5px] text-warn">Choose a role for every file</span>}
+                {missingRole && <span className="text-[12.5px] text-warn">Choose a role for every file</span>}
                 <Button variant="ghost" disabled={running} onClick={() => setItems((xs) => xs.filter((x) => !["done", "duplicate"].includes(x.state)))}>
                   Clear finished
                 </Button>
@@ -178,8 +178,8 @@ export function UploadPanel({
                 <li key={it.key} className="px-4 py-2.5">
                   <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3">
                     <span className="min-w-0">
-                      <span className="block truncate text-[13px] font-medium">{it.file.name}</span>
-                      <span className="text-[11px] text-muted">
+                      <span className="block truncate text-[14px] font-medium">{it.file.name}</span>
+                      <span className="text-[12px] text-muted">
                         {(it.file.size / 1024).toFixed(0)} KB{it.ms ? ` · ${(it.ms / 1000).toFixed(1)}s` : ""}
                       </span>
                     </span>
@@ -187,7 +187,7 @@ export function UploadPanel({
                       value={it.role}
                       disabled={it.state !== "queued"}
                       onChange={(e) => update(it.key, { role: e.target.value as UploadRole })}
-                      className={cx("rounded-md border bg-card px-2 py-1 text-[12px]", !it.role ? "border-warn" : "border-line-strong")}
+                      className={cx("rounded-md border bg-card px-2 py-1 text-[13px]", !it.role ? "border-warn" : "border-line-strong")}
                       aria-label={`Role for ${it.file.name}`}
                     >
                       <option value="">Role…</option>
@@ -197,7 +197,7 @@ export function UploadPanel({
                     </select>
                     <ItemBadge s={it.state} />
                   </div>
-                  {it.error && it.state !== "duplicate" && <p className="mt-1 text-[12px] text-bad">{it.error}</p>}
+                  {it.error && it.state !== "duplicate" && <p className="mt-1 text-[13px] text-bad">{it.error}</p>}
                   {it.state === "failed" && it.id && (
                     <Button className="mt-1.5" onClick={() => retryScore(it.id!, it.key)}>Retry scoring</Button>
                   )}
@@ -205,13 +205,13 @@ export function UploadPanel({
                     <Button className="mt-1.5" onClick={() => processOne(it)}>Retry upload</Button>
                   )}
                   {it.state === "duplicate" && (
-                    <div className="mt-1 flex flex-wrap items-center gap-2 text-[12px] text-warn">
+                    <div className="mt-1 flex flex-wrap items-center gap-2 text-[13px] text-warn">
                       This exact file was already uploaded, so it was skipped.
                       <button className="underline" onClick={() => processOne(it, true)}>Upload anyway</button>
                     </div>
                   )}
                   {it.state === "needs_text" && it.id && <PasteText id={it.id} warnings={it.warnings} onDone={() => { update(it.key, { state: "scoring" }); retryScore(it.id!, it.key); }} />}
-                  {it.state === "done" && it.warnings?.some((w) => /duplicate/i.test(w)) && <p className="mt-1 text-[12px] text-warn">Possible duplicate of another applicant. Check Second Look.</p>}
+                  {it.state === "done" && it.warnings?.some((w) => /duplicate/i.test(w)) && <p className="mt-1 text-[13px] text-warn">Possible duplicate of another applicant. Check Second Look.</p>}
                 </li>
               ))}
             </ul>
@@ -220,7 +220,7 @@ export function UploadPanel({
       </section>
 
       <aside className="space-y-3">
-        <div className="rounded-lg border border-line bg-card px-4 py-3 text-[12.5px] text-ink-2">
+        <div className="rounded-lg border border-line bg-card px-4 py-3 text-[13.5px] text-ink-2">
           <SectionLabel>What happens to each file</SectionLabel>
           <ol className="list-decimal space-y-1 pl-4">
             <li>The original is stored privately.</li>
@@ -237,7 +237,7 @@ export function UploadPanel({
             <SectionLabel>Needs attention</SectionLabel>
             <ul className="space-y-3">
               {stuck.map((c) => (
-                <li key={c.applicant.id} className="text-[12.5px]">
+                <li key={c.applicant.id} className="text-[13.5px]">
                   <div className="flex items-center justify-between gap-2">
                     <button className="truncate font-medium underline-offset-2 hover:underline" onClick={() => onOpen(c)}>
                       {c.name ?? c.applicant.source_filename}
@@ -246,7 +246,7 @@ export function UploadPanel({
                   </div>
                   {c.applicant.status === "failed" ? (
                     <>
-                      <p className="mt-0.5 text-[11.5px] text-bad">{c.applicant.error}</p>
+                      <p className="mt-0.5 text-[12.5px] text-bad">{c.applicant.error}</p>
                       <Button className="mt-1" onClick={() => retryScore(c.applicant.id)}>Retry scoring</Button>
                     </>
                   ) : (
@@ -287,13 +287,13 @@ function PasteText({ id, warnings, onDone }: { id: string; warnings?: string[]; 
   const [busy, setBusy] = useState(false);
   return (
     <div className="mt-1.5 rounded-md border border-warn/30 bg-warn-soft/50 p-2.5">
-      <p className="text-[12px] text-warn">{warnings?.[0] ?? "No readable text found."} Paste the CV text below, or upload a readable copy.</p>
+      <p className="text-[13px] text-warn">{warnings?.[0] ?? "No readable text found."} Paste the CV text below, or upload a readable copy.</p>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         rows={5}
         placeholder="Paste the full CV text here"
-        className="mt-1.5 w-full rounded-md border border-line-strong bg-card px-2 py-1.5 text-[12.5px]"
+        className="mt-1.5 w-full rounded-md border border-line-strong bg-card px-2 py-1.5 text-[13.5px]"
       />
       <div className="mt-1 flex items-center gap-2">
         <Button
@@ -314,7 +314,7 @@ function PasteText({ id, warnings, onDone }: { id: string; warnings?: string[]; 
         >
           Use this text
         </Button>
-        {err && <span className="text-[12px] text-bad">{err}</span>}
+        {err && <span className="text-[13px] text-bad">{err}</span>}
       </div>
     </div>
   );

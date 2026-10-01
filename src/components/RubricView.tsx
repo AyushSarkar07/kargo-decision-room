@@ -9,13 +9,13 @@ export function RubricView({ version }: { version: string }) {
     <div className="mx-auto max-w-5xl space-y-5">
       <header>
         <h2 className="font-serif text-[24px]">What Kargo&apos;s best hires had in common</h2>
-        <p className="mt-1 max-w-3xl text-[13.5px] text-ink-2">
+        <p className="mt-1 max-w-3xl text-[14.5px] text-ink-2">
           Derived from eight past hires and their latest ratings, not from the job descriptions. Five were rated Exceeds, two Meets, one Below. These are
           hypotheses from a small, mixed-role group, not proof that the rubric predicts performance. Version {version}.
         </p>
       </header>
 
-      <div className="rounded-lg border border-warn/30 bg-warn-soft px-4 py-3 text-[12.5px] text-warn">
+      <div className="rounded-lg border border-warn/30 bg-warn-soft px-4 py-3 text-[13.5px] text-warn">
         {rubric.data_gaps.slice(1).map((g) => (
           <p key={g}>{g}</p>
         ))}
@@ -24,7 +24,7 @@ export function RubricView({ version }: { version: string }) {
       <section className="rounded-lg border border-line bg-card">
         <div className="border-b border-line px-5 py-3">
           <SectionLabel>Past hires</SectionLabel>
-          <div className="grid gap-x-6 gap-y-1 text-[12.5px] sm:grid-cols-2">
+          <div className="grid gap-x-6 gap-y-1 text-[13.5px] sm:grid-cols-2">
             {rubric.hires.map((h) => (
               <div key={h.id} className="flex items-center justify-between gap-2">
                 <span>
@@ -41,22 +41,22 @@ export function RubricView({ version }: { version: string }) {
               <summary className="cursor-pointer list-none">
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <div className="text-[14.5px] font-semibold">
+                    <div className="text-[15.5px] font-semibold">
                       <span className="mr-1.5 text-muted">{p.id}</span>
                       {p.name}
                     </div>
-                    <div className="text-[12px] text-muted">{p.strength}</div>
+                    <div className="text-[13px] text-muted">{p.strength}</div>
                   </div>
                   <span className="text-muted group-open:rotate-180">▾</span>
                 </div>
               </summary>
-              <p className="mt-2 text-[13px] text-ink-2">{p.summary}</p>
+              <p className="mt-2 text-[14px] text-ink-2">{p.summary}</p>
               <div className="mt-3 grid gap-4 md:grid-cols-2">
                 <div>
-                  <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-good">Supporting</div>
+                  <div className="mb-1 text-[12px] font-semibold uppercase tracking-wide text-good">Supporting</div>
                   <ul className="space-y-1.5">
                     {p.supporting.map((s, i) => (
-                      <li key={i} className="text-[12.5px]">
+                      <li key={i} className="text-[13.5px]">
                         <span className="font-medium">{hireById(s.hire)!.name}</span>
                         <span className="block italic text-ink-2">&ldquo;{s.excerpt}&rdquo;</span>
                       </li>
@@ -64,19 +64,19 @@ export function RubricView({ version }: { version: string }) {
                   </ul>
                 </div>
                 <div>
-                  <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-bad">Counterexamples</div>
+                  <div className="mb-1 text-[12px] font-semibold uppercase tracking-wide text-bad">Counterexamples</div>
                   <ul className="space-y-1.5">
                     {p.counterexamples.map((s, i) => (
-                      <li key={i} className="text-[12.5px]">
+                      <li key={i} className="text-[13.5px]">
                         <span className="font-medium">{hireById(s.hire)!.name}</span> <span className="text-muted">({hireById(s.hire)!.rating})</span>
                         <span className="block text-ink-2">{s.note}</span>
                       </li>
                     ))}
                   </ul>
-                  <div className="mb-1 mt-3 text-[11px] font-semibold uppercase tracking-wide text-muted">Limitations</div>
+                  <div className="mb-1 mt-3 text-[12px] font-semibold uppercase tracking-wide text-muted">Limitations</div>
                   <ul className="space-y-1">
                     {p.limitations.map((l) => (
-                      <li key={l} className="text-[12px] text-muted">· {l}</li>
+                      <li key={l} className="text-[13px] text-muted">· {l}</li>
                     ))}
                   </ul>
                 </div>
@@ -89,7 +89,7 @@ export function RubricView({ version }: { version: string }) {
       <section className="rounded-lg border border-line bg-card">
         <div className="flex items-center justify-between border-b border-line px-5 py-3">
           <SectionLabel>Rubric</SectionLabel>
-          <div className="flex rounded-md border border-line-strong p-0.5 text-[12px]">
+          <div className="flex rounded-md border border-line-strong p-0.5 text-[13px]">
             {ROLES.map((r) => (
               <button key={r} onClick={() => setRole(r)} className={cx("rounded px-2.5 py-1 font-medium", role === r ? "bg-ink text-white" : "text-ink-2")}>
                 {roleName(r)}
@@ -103,20 +103,20 @@ export function RubricView({ version }: { version: string }) {
               <div>
                 <div className="flex items-baseline gap-2">
                   <span className="tabular text-[18px] font-semibold">{c.weights[role]}%</span>
-                  <span className="text-[14.5px] font-semibold">{c.name}</span>
+                  <span className="text-[15.5px] font-semibold">{c.name}</span>
                 </div>
-                <p className="mt-1 text-[12.5px] text-ink-2">{c.definition}</p>
-                <p className="mt-2 text-[12px] text-muted">
+                <p className="mt-1 text-[13.5px] text-ink-2">{c.definition}</p>
+                <p className="mt-2 text-[13px] text-muted">
                   From {c.pattern_ids.join(", ")} ·{" "}
                   {c.hire_evidence
                     .filter((e) => e.supports)
                     .map((e) => hireById(e.hire)!.name)
                     .join(", ")}
                 </p>
-                {role === "SPM" && <p className="mt-2 text-[12px] text-ink-2"><span className="font-medium">SPM ownership:</span> {c.spm_ownership}</p>}
-                <p className="mt-2 text-[12px] text-ink-2"><span className="font-medium">Insufficient evidence:</span> {c.insufficient_evidence}</p>
+                {role === "SPM" && <p className="mt-2 text-[13px] text-ink-2"><span className="font-medium">SPM ownership:</span> {c.spm_ownership}</p>}
+                <p className="mt-2 text-[13px] text-ink-2"><span className="font-medium">Insufficient evidence:</span> {c.insufficient_evidence}</p>
               </div>
-              <ol className="space-y-1 text-[12px]">
+              <ol className="space-y-1 text-[13px]">
                 {(["4", "3", "2", "1", "0"] as const).map((k) => (
                   <li key={k} className="grid grid-cols-[18px_1fr] gap-2">
                     <span className="tabular font-semibold text-ink-2">{k}</span>
@@ -131,7 +131,7 @@ export function RubricView({ version }: { version: string }) {
             </div>
           ))}
         </div>
-        <div className="border-t border-line px-5 py-2.5 text-[12px] text-muted">
+        <div className="border-t border-line px-5 py-2.5 text-[13px] text-muted">
           Total {rubric.criteria.reduce((s, c) => s + c.weights[role], 0)}%.
         </div>
       </section>
@@ -139,7 +139,7 @@ export function RubricView({ version }: { version: string }) {
       <section className="grid gap-4 md:grid-cols-2">
         <div className="rounded-lg border border-line bg-card px-5 py-4">
           <SectionLabel>Missing evidence policy</SectionLabel>
-          <ul className="space-y-1.5 text-[12.5px] text-ink-2">
+          <ul className="space-y-1.5 text-[13.5px] text-ink-2">
             {rubric.missing_evidence_policy.rules.map((r) => (
               <li key={r}>· {r}</li>
             ))}
@@ -147,7 +147,7 @@ export function RubricView({ version }: { version: string }) {
         </div>
         <div className="rounded-lg border border-line bg-card px-5 py-4">
           <SectionLabel>Never used as a signal</SectionLabel>
-          <ul className="space-y-1.5 text-[12.5px] text-ink-2">
+          <ul className="space-y-1.5 text-[13.5px] text-ink-2">
             {rubric.excluded_signals.map((r) => (
               <li key={r}>· {r}</li>
             ))}
@@ -160,8 +160,8 @@ export function RubricView({ version }: { version: string }) {
         <div className="grid gap-4 md:grid-cols-2">
           {ROLES.map((r) => (
             <div key={r}>
-              <div className="mb-1 text-[13px] font-semibold">{roleName(r)}</div>
-              <ul className="space-y-1 text-[12.5px] text-ink-2">
+              <div className="mb-1 text-[14px] font-semibold">{roleName(r)}</div>
+              <ul className="space-y-1 text-[13.5px] text-ink-2">
                 {rubric.role_requirements[r].map((q) => (
                   <li key={q}>· {q}</li>
                 ))}

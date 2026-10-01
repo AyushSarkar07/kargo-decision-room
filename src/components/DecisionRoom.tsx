@@ -4,8 +4,8 @@ import { buildRoleBoard, secondLook, type Candidate } from "@/lib/board";
 import type { Role } from "@/lib/rubric";
 import { api, type AppState } from "./api-client";
 import { CandidateList } from "./CandidateList";
-import { ReviewPanel } from "./ReviewPanel";
-import { EmailPanel } from "./EmailPanel";
+import { CandidateTable } from "./CandidateTable";
+import { DetailPane } from "./DetailPane";
 import { UploadPanel } from "./UploadPanel";
 import { SecondLookView } from "./SecondLook";
 import { RubricView } from "./RubricView";
@@ -73,7 +73,8 @@ export function DecisionRoom() {
 
   const role: Role | null = tab === "PM" || tab === "SPM" ? tab : null;
   const board = role ? boards[role] : null;
-  const selId = role ? selected[role] ?? board?.ranked[0]?.candidate.applicant.id ?? null : null;
+  // Nobody is pre-selected: the full list comes first, a profile opens only when clicked.
+  const selId = role ? selected[role] : null;
   const selCandidate = selId ? candidates.find((c) => c.applicant.id === selId) ?? null : null;
   const synthCount = (state.candidates ?? []).filter((c) => c.applicant.is_synthetic).length;
 
@@ -81,23 +82,34 @@ export function DecisionRoom() {
     { id: "PM", label: "Product Manager", count: boards.PM.ranked.length },
     { id: "SPM", label: "Senior PM", count: boards.SPM.ranked.length },
     { id: "second", label: "Second Look", count: second.length },
-    { id: "upload", label: "Upload" },
-    { id: "rubric", label: "Rubric" },
-    { id: "calibration", label: "Calibration" },
     { id: "log", label: "Sent log", count: candidates.reduce((n, c) => n + c.sends.length, 0) },
   ];
+  const reference: { id: Tab; label: string }[] = [
+    { id: "rubric", label: "Rubric" },
+    { id: "calibration", label: "Calibration" },
+  ];
+  const unassigned = boards.PM.roleNotStated.length;
+  const titles: Record<Tab, [string, string]> = {
+    PM: ["Product Manager shortlist", `${boards.PM.ranked.length} ranked · top five are a recommendation, not a decision${unassigned ? ` · ${unassigned} with no stated role below` : ""}`],
+    SPM: ["Senior Product Manager shortlist", `${boards.SPM.ranked.length} ranked · top five are a recommendation, not a decision${unassigned ? ` · ${unassigned} with no stated role below` : ""}`],
+    second: ["Second Look", "People who could be missed for reasons other than a weak record"],
+    upload: ["Upload CVs", "PDF, DOCX or TXT · choose the role each person applied for"],
+    rubric: ["Rubric", "Where the scoring comes from: Kargo's past hires"],
+    calibration: ["Calibration", "The past hires scored with today's rubric"],
+    log: ["Sent log", "Every email attempt and where it went"],
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="border-b border-line bg-card/80 backdrop-blur">
+      <header className="border-b border-line-strong bg-card">
         <div className="mx-auto flex max-w-[1500px] flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3 sm:px-6">
           <div className="flex items-baseline gap-2">
-            <span className="text-[15px] font-semibold tracking-tight">Kargo</span>
+            <span className="text-[19px] font-bold tracking-tight">Kargo</span>
             <span className="text-line-strong">|</span>
-            <span className="font-serif text-[17px] italic text-ink-2">The Decision Room</span>
+            <span className="font-serif text-[21px] italic text-ink-2">The Decision Room</span>
           </div>
           <ModeBar state={state} />
-          <div className="ml-auto flex items-center gap-3 text-[12px] text-muted">
+          <div className="ml-auto flex items-center gap-4 text-[13px] text-muted">
             {synthCount > 0 && (
               <label className="flex cursor-pointer items-center gap-1.5">
                 <input type="checkbox" checked={showSynthetic} onChange={(e) => setShowSynthetic(e.target.checked)} className="accent-accent" />
@@ -114,22 +126,54 @@ export function DecisionRoom() {
                 <button className="underline-offset-2 hover:underline">Sign out</button>
               </form>
             )}
-          </div>
-        </div>
-        <nav className="mx-auto flex max-w-[1500px] gap-1 overflow-x-auto px-4 sm:px-6" aria-label="Sections">
-          {tabs.map((t) => (
             <button
-              key={t.id}
-              onClick={() => setTab(t.id)}
+              onClick={() => setTab("upload")}
               className={cx(
-                "relative -mb-px flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2 text-[13px] font-medium",
-                tab === t.id ? "border-accent text-ink" : "border-transparent text-muted hover:text-ink",
+                "inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-[15px] font-semibold text-white shadow-sm transition-colors",
+                tab === "upload" ? "bg-ink" : "bg-accent hover:bg-[#b85a17]",
               )}
             >
-              {t.label}
-              {t.count !== undefined && <span className="tabular rounded bg-paper px-1.5 text-[11px] text-muted">{t.count}</span>}
+              <svg viewBox="0 0 20 20" className="h-4 w-4" fill="currentColor" aria-hidden>
+                <path d="M10 3a1 1 0 0 1 .7.3l4 4a1 1 0 1 1-1.4 1.4L11 6.4V13a1 1 0 1 1-2 0V6.4L6.7 8.7a1 1 0 0 1-1.4-1.4l4-4A1 1 0 0 1 10 3Zm-6 12a1 1 0 0 1 1 1h10a1 1 0 1 1 2 0 2 2 0 0 1-2 2H5a2 2 0 0 1-2-2 1 1 0 0 1 1-1Z" />
+              </svg>
+              Upload CVs
             </button>
-          ))}
+          </div>
+        </div>
+        <nav className="mx-auto flex max-w-[1500px] items-center gap-2 overflow-x-auto px-4 pb-3 sm:px-6" aria-label="Sections">
+          <div className="flex gap-1 rounded-xl bg-paper p-1">
+            {tabs.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                aria-current={tab === t.id ? "page" : undefined}
+                className={cx(
+                  "flex items-center gap-2 whitespace-nowrap rounded-lg px-4 py-2 text-[15px] font-semibold transition-colors",
+                  tab === t.id ? "bg-ink text-white shadow-sm" : "text-ink-2 hover:bg-card hover:text-ink",
+                )}
+              >
+                {t.label}
+                {t.count !== undefined && (
+                  <span className={cx("tabular rounded-md px-1.5 text-[13px]", tab === t.id ? "bg-white/20 text-white" : "bg-card text-muted")}>{t.count}</span>
+                )}
+              </button>
+            ))}
+          </div>
+          <div className="ml-auto flex gap-1">
+            {reference.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setTab(t.id)}
+                aria-current={tab === t.id ? "page" : undefined}
+                className={cx(
+                  "whitespace-nowrap rounded-lg px-3 py-2 text-[14px] font-medium",
+                  tab === t.id ? "bg-ink text-white" : "text-muted hover:bg-paper hover:text-ink",
+                )}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </nav>
       </header>
 
@@ -144,21 +188,34 @@ export function DecisionRoom() {
         </div>
       )}
 
-      <main className="mx-auto w-full max-w-[1500px] flex-1 px-4 py-4 sm:px-6">
-        {role && board && (
-          <div className="grid gap-4 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[280px_minmax(0,1fr)_370px]">
-            <CandidateList board={board} selectedId={selId} onSelect={(id) => setSelected((s) => ({ ...s, [role]: id }))} onUpload={() => setTab("upload")} />
-            {selCandidate ? (
-              <>
-                <ReviewPanel key={`${selCandidate.applicant.id}-${role}`} candidate={selCandidate} role={role} board={board} onChanged={refresh} onOpenOtherRole={(r) => openCandidate(selCandidate, r)} />
-                <div className="lg:col-start-2 xl:col-start-auto">
-                  <EmailPanel key={`${selCandidate.applicant.id}-email`} candidate={selCandidate} board={boards[selCandidate.applicant.applied_role]} config={state.config} onChanged={refresh} />
-                </div>
-              </>
-            ) : (
-              <EmptyReview onUpload={() => setTab("upload")} demo={state.session.demo} onSeeded={refresh} />
-            )}
+      <main className="mx-auto w-full max-w-[1500px] flex-1 px-4 py-5 sm:px-6">
+        <div className="mb-5">
+          <h1 className="font-serif text-[30px] leading-tight text-ink">{titles[tab][0]}</h1>
+          <p className="mt-1 text-[15px] text-muted">{titles[tab][1]}</p>
+        </div>
+        {role && board && !selCandidate && (
+          <CandidateTable board={board} onSelect={(id) => setSelected((s) => ({ ...s, [role]: id }))} onUpload={() => setTab("upload")} />
+        )}
+        {role && board && selCandidate && (
+          <div className="grid items-start gap-5 lg:grid-cols-[minmax(320px,2fr)_minmax(0,3fr)]">
+            <div className="hidden lg:block">
+              <CandidateList board={board} selectedId={selId} onSelect={(id) => setSelected((s) => ({ ...s, [role]: id }))} onUpload={() => setTab("upload")} />
+            </div>
+            <DetailPane
+              key={selCandidate.applicant.id}
+              candidate={selCandidate}
+              role={role}
+              board={board}
+              appliedBoard={boards[selCandidate.applicant.applied_role]}
+              config={state.config}
+              onClose={() => setSelected((s) => ({ ...s, [role]: null }))}
+              onChanged={refresh}
+              onOpenOtherRole={(r) => openCandidate(selCandidate, r)}
+            />
           </div>
+        )}
+        {role && board && !board.ranked.length && !board.roleNotStated.length && state.session.demo && (
+          <EmptyReview onUpload={() => setTab("upload")} demo={state.session.demo} onSeeded={refresh} />
         )}
         {tab === "second" && <SecondLookView items={second} onOpen={openCandidate} />}
         {tab === "upload" && (

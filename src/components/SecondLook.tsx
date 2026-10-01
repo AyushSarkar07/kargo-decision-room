@@ -7,14 +7,13 @@ export function SecondLookView({ items, onOpen }: { items: SecondLookItem[]; onO
   return (
     <section className="mx-auto max-w-4xl">
       <div className="mb-3">
-        <h2 className="font-serif text-[22px]">Second Look</h2>
-        <p className="text-[13px] text-muted">
+        <p className="text-[14px] text-muted">
           People who could disappear below the shortlist for reasons other than a weak record: thin or unreadable CVs, very different PM and SPM results, or
           strong evidence with many gaps. Worth a minute each.
         </p>
       </div>
       {items.length === 0 ? (
-        <p className="rounded-lg border border-line bg-card px-4 py-6 text-[13px] text-muted">Nobody needs a second look right now.</p>
+        <p className="rounded-lg border border-line bg-card px-4 py-6 text-[14px] text-muted">Nobody needs a second look right now.</p>
       ) : (
         <ul className="divide-y divide-line/70 rounded-lg border border-line bg-card">
           {items.map(({ candidate: c, reasons }) => {
@@ -23,26 +22,26 @@ export function SecondLookView({ items, onOpen }: { items: SecondLookItem[]; onO
               <li key={c.applicant.id} className="grid gap-2 px-4 py-3 sm:grid-cols-[minmax(0,1fr)_auto]">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[14px] font-medium">{c.name ?? c.applicant.source_filename}</span>
+                    <span className="text-[15px] font-medium">{c.name ?? c.applicant.source_filename}</span>
                     <Chip>{c.applicant.role_confirmed === false ? "role not stated" : `applied ${c.applicant.applied_role}`}</Chip>
                     {c.applicant.is_synthetic && <Chip>synthetic</Chip>}
                   </div>
                   <ul className="mt-1 space-y-0.5">
                     {reasons.map((r) => (
-                      <li key={r} className="text-[12.5px] text-ink-2">· {r}</li>
+                      <li key={r} className="text-[13.5px] text-ink-2">· {r}</li>
                     ))}
                   </ul>
                 </div>
                 <div className="flex items-center gap-3 sm:flex-col sm:items-end">
                   {own && (
-                    <div className="text-right text-[12px]">
+                    <div className="text-right text-[13px]">
                       <div className="tabular">
                         PM <b>{c.evaluations.PM?.ranking_score.toFixed(1)}</b> · SPM <b>{c.evaluations.SPM?.ranking_score.toFixed(1)}</b>
                       </div>
                       <CoverageBar coverage={own.coverage} />
                     </div>
                   )}
-                  <div className="flex gap-2 text-[12px]">
+                  <div className="flex gap-2 text-[13px]">
                     {c.evaluations.PM && <button className="text-accent underline-offset-2 hover:underline" onClick={() => onOpen(c, "PM")}>Open PM view</button>}
                     {c.evaluations.SPM && <button className="text-accent underline-offset-2 hover:underline" onClick={() => onOpen(c, "SPM")}>Open SPM view</button>}
                   </div>
@@ -54,7 +53,7 @@ export function SecondLookView({ items, onOpen }: { items: SecondLookItem[]; onO
       )}
       <div className="mt-4 rounded-lg border border-line bg-card px-4 py-3">
         <SectionLabel>Listed when</SectionLabel>
-        <ul className="text-[12.5px] text-ink-2">
+        <ul className="text-[13.5px] text-ink-2">
           <li>· Evidence coverage is under 60% for the role applied for</li>
           <li>· PM and SPM ranking scores differ by 15 points or more</li>
           <li>· The score on evidenced criteria is 20+ points above the ranking score</li>

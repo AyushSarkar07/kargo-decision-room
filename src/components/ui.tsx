@@ -18,7 +18,7 @@ const TONES: Record<Tone, string> = {
 
 export function Chip({ tone = "neutral", children, title }: { tone?: Tone; children: ReactNode; title?: string }) {
   return (
-    <span title={title} className={cx("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium leading-4 whitespace-nowrap", TONES[tone])}>
+    <span title={title} className={cx("inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[12px] font-medium leading-4 whitespace-nowrap", TONES[tone])}>
       {children}
     </span>
   );
@@ -63,7 +63,7 @@ export function Spinner({ className = "h-3 w-3" }: { className?: string }) {
 export function ScorePips({ score }: { score: number | null }) {
   if (score === null)
     return (
-      <span className="inline-flex items-center rounded border border-dashed border-line-strong px-1.5 text-[11px] text-muted" title="Not evidenced: the CV does not say enough to judge">
+      <span className="inline-flex items-center rounded border border-dashed border-line-strong px-1.5 text-[12px] text-muted" title="Not evidenced: the CV does not say enough to judge">
         Not evidenced
       </span>
     );
@@ -72,7 +72,7 @@ export function ScorePips({ score }: { score: number | null }) {
       {[1, 2, 3, 4].map((i) => (
         <span key={i} className={cx("h-2 w-2 rounded-full", i <= score ? (score >= 3 ? "bg-ink" : "bg-ink-2/70") : "bg-line-strong/60")} />
       ))}
-      <span className="ml-1 tabular text-[11px] text-muted">{score}/4</span>
+      <span className="ml-1 tabular text-[12px] text-muted">{score}/4</span>
     </span>
   );
 }
@@ -84,7 +84,7 @@ export function CoverageBar({ coverage, className }: { coverage: number; classNa
       <span className="relative h-1.5 w-12 overflow-hidden rounded-full bg-line">
         <span className={cx("absolute inset-y-0 left-0 rounded-full", low ? "bg-warn" : "bg-ink-2/60")} style={{ width: `${coverage}%` }} />
       </span>
-      <span className={cx("tabular text-[11px]", low ? "text-warn" : "text-muted")}>{coverage}%</span>
+      <span className={cx("tabular text-[12px]", low ? "text-warn" : "text-muted")}>{coverage}%</span>
     </span>
   );
 }
@@ -118,7 +118,7 @@ export function Button({
       title={title}
       onClick={onClick}
       disabled={disabled}
-      className={cx("inline-flex items-center justify-center gap-1.5 rounded-md border px-3 py-1.5 text-[13px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-45", v, className)}
+      className={cx("inline-flex items-center justify-center gap-1.5 rounded-md border px-3 py-1.5 text-[14px] font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-45", v, className)}
     >
       {children}
     </button>
@@ -128,7 +128,7 @@ export function Button({
 export function SectionLabel({ children, right }: { children: ReactNode; right?: ReactNode }) {
   return (
     <div className="mb-2 flex items-baseline justify-between gap-2">
-      <h3 className="text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">{children}</h3>
+      <h3 className="text-[12px] font-semibold uppercase tracking-[0.08em] text-muted">{children}</h3>
       {right}
     </div>
   );

@@ -21,11 +21,11 @@ export function CandidateList({
     <aside className="flex flex-col gap-3 lg:sticky lg:top-3 lg:max-h-[calc(100vh-24px)] lg:overflow-y-auto">
       <div className="rounded-lg border border-line bg-card">
         <div className="flex items-center justify-between border-b border-line px-3 py-2">
-          <span className="text-[12px] font-semibold text-ink-2">Ranked for {board.role}</span>
-          <span className="text-[11px] text-muted">by ranking score</span>
+          <span className="text-[13px] font-semibold text-ink-2">Ranked for {board.role}</span>
+          <span className="text-[12px] text-muted">by ranking score</span>
         </div>
         {board.ranked.length === 0 && (
-          <div className="px-3 py-4 text-[12px] text-muted">
+          <div className="px-3 py-4 text-[13px] text-muted">
             Nobody has applied for this role yet.{" "}
             <button onClick={onUpload} className="text-accent underline-offset-2 hover:underline">Upload CVs</button>
           </div>
@@ -38,7 +38,7 @@ export function CandidateList({
         {rest.length > 0 && (
           <>
             <div className="flex items-center gap-2 border-y border-dashed border-line-strong bg-paper/60 px-3 py-1.5">
-              <span className="text-[11px] font-medium text-muted">Below the provisional top {TOP_N} · needs review, not rejected</span>
+              <span className="text-[12px] font-medium text-muted">Below the provisional top {TOP_N} · needs review, not rejected</span>
             </div>
             <ol>
               {rest.map((r) => (
@@ -51,11 +51,11 @@ export function CandidateList({
 
       {board.pending.length > 0 && (
         <div className="rounded-lg border border-line bg-card">
-          <div className="border-b border-line px-3 py-2 text-[12px] font-semibold text-ink-2">Not scored yet</div>
+          <div className="border-b border-line px-3 py-2 text-[13px] font-semibold text-ink-2">Not scored yet</div>
           <ul>
             {board.pending.map((c) => (
               <li key={c.applicant.id} className="flex items-center justify-between gap-2 border-b border-line/60 px-3 py-2 last:border-0">
-                <span className="truncate text-[13px]">{c.name ?? c.applicant.source_filename}</span>
+                <span className="truncate text-[14px]">{c.name ?? c.applicant.source_filename}</span>
                 <StatusChip status={statusOf(c, false)} />
               </li>
             ))}
@@ -66,8 +66,8 @@ export function CandidateList({
       {board.roleNotStated.length > 0 && (
         <div className="rounded-lg border border-warn/30 bg-card">
           <div className="border-b border-line px-3 py-2">
-            <div className="text-[12px] font-semibold text-ink-2">Role not stated ({board.roleNotStated.length})</div>
-            <div className="text-[11px] text-muted">Scored for both roles. Open one to choose PM or SPM; until then they are not ranked.</div>
+            <div className="text-[13px] font-semibold text-ink-2">Role not stated ({board.roleNotStated.length})</div>
+            <div className="text-[12px] text-muted">Scored for both roles. Open one to choose PM or SPM; until then they are not ranked.</div>
           </div>
           <ul className="max-h-[340px] overflow-y-auto">
             {board.roleNotStated.map((x) => (
@@ -77,12 +77,12 @@ export function CandidateList({
                   className={cx("flex w-full items-center justify-between gap-2 border-b border-line/60 px-3 py-2 text-left last:border-0 hover:bg-paper", selectedId === x.candidate.applicant.id && "bg-accent-soft/60")}
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-[13px] font-medium">{x.candidate.name ?? x.candidate.applicant.source_filename}</span>
-                    <span className="text-[11px] text-muted">
+                    <span className="block truncate text-[14px] font-medium">{x.candidate.name ?? x.candidate.applicant.source_filename}</span>
+                    <span className="text-[12px] text-muted">
                       {x.evaluation ? `would be #${x.wouldRank} for ${board.role}` : x.candidate.applicant.status.replace("_", " ")}
                     </span>
                   </span>
-                  {x.evaluation && <span className="tabular text-[13px] font-semibold">{x.evaluation.ranking_score.toFixed(1)}</span>}
+                  {x.evaluation && <span className="tabular text-[14px] font-semibold">{x.evaluation.ranking_score.toFixed(1)}</span>}
                 </button>
               </li>
             ))}
@@ -93,8 +93,8 @@ export function CandidateList({
       {board.crossRole.length > 0 && (
         <div className="rounded-lg border border-line bg-card">
           <div className="border-b border-line px-3 py-2">
-            <div className="text-[12px] font-semibold text-ink-2">Possible cross-role fit</div>
-            <div className="text-[11px] text-muted">Applied for {board.role === "PM" ? "SPM" : "PM"}; would rank here. Shown, not moved.</div>
+            <div className="text-[13px] font-semibold text-ink-2">Possible cross-role fit</div>
+            <div className="text-[12px] text-muted">Applied for {board.role === "PM" ? "SPM" : "PM"}; would rank here. Shown, not moved.</div>
           </div>
           <ul>
             {board.crossRole.map((x) => (
@@ -104,10 +104,10 @@ export function CandidateList({
                   className={cx("flex w-full items-center justify-between gap-2 border-b border-line/60 px-3 py-2 text-left last:border-0 hover:bg-paper", selectedId === x.candidate.applicant.id && "bg-accent-soft/60")}
                 >
                   <span className="min-w-0">
-                    <span className="block truncate text-[13px] font-medium">{x.candidate.name ?? "Name not found"}</span>
-                    <span className="text-[11px] text-muted">would be #{x.wouldRank} for {board.role}</span>
+                    <span className="block truncate text-[14px] font-medium">{x.candidate.name ?? "Name not found"}</span>
+                    <span className="text-[12px] text-muted">would be #{x.wouldRank} for {board.role}</span>
                   </span>
-                  <span className="tabular text-[13px] font-semibold">{x.evaluation.ranking_score.toFixed(1)}</span>
+                  <span className="tabular text-[14px] font-semibold">{x.evaluation.ranking_score.toFixed(1)}</span>
                 </button>
               </li>
             ))}
@@ -130,9 +130,9 @@ function Row({ r, selected, onSelect }: { r: RoleBoard["ranked"][number]; select
           selected ? "bg-accent-soft/70" : "hover:bg-paper",
         )}
       >
-        <span className="tabular text-[12px] text-muted">{r.rank}</span>
+        <span className="tabular text-[13px] text-muted">{r.rank}</span>
         <span className="min-w-0">
-          <span className="block truncate text-[13px] font-medium">{c.name ?? "Name not found"}</span>
+          <span className="block truncate text-[14px] font-medium">{c.name ?? "Name not found"}</span>
           <CriterionStrip criteria={r.evaluation.criteria} role={r.evaluation.role} className="mt-1" />
           <span className="mt-1 flex flex-wrap items-center gap-1">
             <StatusChip status={r.status} />
@@ -141,7 +141,7 @@ function Row({ r, selected, onSelect }: { r: RoleBoard["ranked"][number]; select
           </span>
         </span>
         <span className="flex flex-col items-end gap-1">
-          <span className="tabular text-[15px] font-semibold">{r.evaluation.ranking_score.toFixed(1)}</span>
+          <span className="tabular text-[16px] font-semibold">{r.evaluation.ranking_score.toFixed(1)}</span>
           <CoverageBar coverage={r.evaluation.coverage} />
         </span>
       </button>

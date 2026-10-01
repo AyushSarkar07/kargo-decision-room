@@ -108,7 +108,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
   if (a.status !== "scored") return null;
   if (a.role_confirmed === false)
     return (
-      <section className="rounded-lg border border-line bg-card px-4 py-3.5 text-[12.5px] text-muted">
+      <section className="rounded-lg border border-line bg-card px-4 py-3.5 text-[13.5px] text-muted">
         Decisions and emails open once you choose the role this person applied for (above the scores).
       </section>
     );
@@ -117,7 +117,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
     <section className="space-y-4 xl:sticky xl:top-3 xl:max-h-[calc(100vh-24px)] xl:overflow-y-auto">
       {/* Decision */}
       <div className="rounded-lg border border-line bg-card px-4 py-3.5">
-        <SectionLabel right={<span className="text-[11px] text-muted">Only you decide</span>}>Decision</SectionLabel>
+        <SectionLabel right={<span className="text-[12px] text-muted">Only you decide</span>}>Decision</SectionLabel>
         <div className="grid grid-cols-4 gap-1.5">
           {DECISIONS.map((d) => (
             <button
@@ -126,7 +126,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
               disabled={locked || busy === "decision"}
               onClick={() => decide(decision === d.v ? "undecided" : d.v)}
               className={cx(
-                "rounded-md border px-2 py-1.5 text-[12.5px] font-medium transition-colors disabled:opacity-50",
+                "rounded-md border px-2 py-1.5 text-[13.5px] font-medium transition-colors disabled:opacity-50",
                 decision === d.v
                   ? d.v === "reject"
                     ? "border-bad bg-bad-soft text-bad"
@@ -140,7 +140,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
             </button>
           ))}
         </div>
-        <p className="mt-2 text-[12px] text-muted">
+        <p className="mt-2 text-[13px] text-muted">
           {decision === "undecided"
             ? inTop
               ? "Recommended for a first call (provisional top 5). No decision recorded yet."
@@ -153,7 +153,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
       {/* Email */}
       <div className="rounded-lg border border-line bg-card">
         <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-2.5">
-          <div className="flex rounded-md border border-line-strong p-0.5 text-[12px]">
+          <div className="flex rounded-md border border-line-strong p-0.5 text-[13px]">
             {(["invite", "rejection"] as const).map((t) => (
               <button
                 key={t}
@@ -165,43 +165,43 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
               </button>
             ))}
           </div>
-          <span className="text-[11px] text-muted">
+          <span className="text-[12px] text-muted">
             {draft?.edited ? "Edited by you" : draft?.generated_by === "simulated" ? "Simulated draft" : draft?.generated_by === "template-fallback" ? "Template draft" : "AI draft"}
           </span>
         </div>
 
         <div className="space-y-2 px-4 py-3">
-          <p className="rounded bg-paper px-2 py-1 text-[11.5px] text-muted">
+          <p className="rounded bg-paper px-2 py-1 text-[12.5px] text-muted">
             This is a draft, not a decision. It is for the {roleName(a.applied_role)} role they applied for.
           </p>
           <label className="block">
-            <span className="text-[11px] font-medium text-muted">Subject</span>
+            <span className="text-[12px] font-medium text-muted">Subject</span>
             <input
               value={subject}
               disabled={locked}
               onChange={(e) => setSubject(e.target.value)}
-              className="mt-0.5 w-full rounded-md border border-line-strong bg-card px-2.5 py-1.5 text-[13px] disabled:bg-paper"
+              className="mt-0.5 w-full rounded-md border border-line-strong bg-card px-2.5 py-1.5 text-[14px] disabled:bg-paper"
             />
           </label>
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-medium text-muted">Message</span>
-              <button className="text-[11px] text-accent underline-offset-2 hover:underline" onClick={() => setPreview(!preview)}>
+              <span className="text-[12px] font-medium text-muted">Message</span>
+              <button className="text-[12px] text-accent underline-offset-2 hover:underline" onClick={() => setPreview(!preview)}>
                 {preview ? "Edit" : "Preview with name"}
               </button>
             </div>
             {preview ? (
-              <div className="mt-0.5 min-h-[260px] whitespace-pre-wrap rounded-md border border-line bg-paper/50 px-3 py-2 font-serif text-[14.5px] leading-relaxed">{merged}</div>
+              <div className="mt-0.5 min-h-[260px] whitespace-pre-wrap rounded-md border border-line bg-paper/50 px-3 py-2 font-serif text-[15.5px] leading-relaxed">{merged}</div>
             ) : (
               <textarea
                 value={body}
                 disabled={locked}
                 onChange={(e) => setBody(e.target.value)}
                 rows={13}
-                className="mt-0.5 w-full resize-y rounded-md border border-line-strong bg-card px-3 py-2 text-[13px] leading-relaxed disabled:bg-paper"
+                className="mt-0.5 w-full resize-y rounded-md border border-line-strong bg-card px-3 py-2 text-[14px] leading-relaxed disabled:bg-paper"
               />
             )}
-            <p className="mt-1 text-[11px] text-muted">
+            <p className="mt-1 text-[12px] text-muted">
               <code className="rounded bg-paper px-1">{"{{first_name}}"}</code> is replaced with {firstName ? <b>{firstName}</b> : "the candidate's name"} on the server when sent.
             </p>
           </div>
@@ -222,11 +222,11 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
           <SendState candidate={candidate} />
           {!locked && (
             <>
-              <div className="mb-2 text-[12px]">
+              <div className="mb-2 text-[13px]">
                 <div className="text-muted">Delivers to</div>
                 <div className="font-medium">{dest?.to ?? "No test recipient configured"}</div>
-                {dest && <div className={cx("mt-0.5 text-[11.5px]", dest.redirected ? "text-warn" : "text-muted")}>{dest.note}</div>}
-                {config.email === "resend-test" && <div className="mt-0.5 text-[11px] text-muted">Test mode: only allowlisted test addresses can receive email.</div>}
+                {dest && <div className={cx("mt-0.5 text-[12.5px]", dest.redirected ? "text-warn" : "text-muted")}>{dest.note}</div>}
+                {config.email === "resend-test" && <div className="mt-0.5 text-[12px] text-muted">Test mode: only allowlisted test addresses can receive email.</div>}
               </div>
               <Button variant="primary" className="w-full py-2" disabled={!canSend || busy === "send"} onClick={() => setConfirming(true)}>
                 Confirm and send…
@@ -241,7 +241,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
               />
             </>
           )}
-          {msg && <p className={cx("mt-2 text-[12px]", msg.tone === "bad" ? "text-bad" : "text-good")}>{msg.text}</p>}
+          {msg && <p className={cx("mt-2 text-[13px]", msg.tone === "bad" ? "text-bad" : "text-good")}>{msg.text}</p>}
         </div>
       </div>
 
@@ -249,10 +249,10 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/30 p-4" role="dialog" aria-modal>
           <div className="w-full max-w-lg rounded-lg border border-line bg-card shadow-xl">
             <div className="border-b border-line px-5 py-3">
-              <h3 className="text-[15px] font-semibold">Send this {type} email?</h3>
-              <p className="text-[12px] text-muted">Nothing is sent until you confirm. This cannot be unsent.</p>
+              <h3 className="text-[16px] font-semibold">Send this {type} email?</h3>
+              <p className="text-[13px] text-muted">Nothing is sent until you confirm. This cannot be unsent.</p>
             </div>
-            <dl className="grid grid-cols-[80px_1fr] gap-x-3 gap-y-1.5 px-5 py-3 text-[13px]">
+            <dl className="grid grid-cols-[80px_1fr] gap-x-3 gap-y-1.5 px-5 py-3 text-[14px]">
               <dt className="text-muted">To</dt>
               <dd className="font-medium">
                 {dest.to} {dest.mode === "simulated" ? <Chip tone="warn">simulated</Chip> : <Chip tone="info">test delivery</Chip>}
@@ -266,7 +266,7 @@ export function EmailPanel({ candidate, board, config, onChanged }: { candidate:
               <dt className="text-muted">Subject</dt>
               <dd>{subject}</dd>
             </dl>
-            <div className="mx-5 max-h-64 overflow-y-auto whitespace-pre-wrap rounded-md border border-line bg-paper/50 px-3 py-2 font-serif text-[14px] leading-relaxed">{merged}</div>
+            <div className="mx-5 max-h-64 overflow-y-auto whitespace-pre-wrap rounded-md border border-line bg-paper/50 px-3 py-2 font-serif text-[15px] leading-relaxed">{merged}</div>
             <div className="flex justify-end gap-2 px-5 py-3">
               <Button variant="ghost" onClick={() => setConfirming(false)}>Cancel</Button>
               <Button variant="primary" onClick={confirmSend} disabled={busy === "send"}>
@@ -286,7 +286,7 @@ function SendBlockers({ reasons }: { reasons: (string | false)[] }) {
   return (
     <ul className="mt-1.5 space-y-0.5">
       {r.map((x) => (
-        <li key={x} className="text-[11.5px] text-muted">
+        <li key={x} className="text-[12.5px] text-muted">
           · {x}
         </li>
       ))}
@@ -298,7 +298,7 @@ function SendState({ candidate }: { candidate: Candidate }) {
   const s = latestSend(candidate);
   if (!s) return null;
   const when = new Date(s.updated_at).toLocaleString();
-  const box = "mb-3 rounded-md border px-3 py-2 text-[12px]";
+  const box = "mb-3 rounded-md border px-3 py-2 text-[13px]";
   if (s.status === "sending")
     return (
       <div className={cx(box, "border-info/30 bg-info-soft text-info")}>
@@ -321,8 +321,8 @@ function SendState({ candidate }: { candidate: Candidate }) {
   return (
     <div className={cx(box, "border-good/30 bg-good-soft text-good")}>
       {s.status === "delivered" ? "Delivered" : "Accepted by Resend"} · {s.to_address} · {when}
-      <div className="mt-0.5 font-mono text-[10.5px] opacity-80">id {s.provider_message_id}</div>
-      {s.status === "accepted" && <div className="mt-0.5 text-[11px] opacity-90">Accepted means the provider took the message. Delivery is confirmed only by a delivery webhook.</div>}
+      <div className="mt-0.5 font-mono text-[11.5px] opacity-80">id {s.provider_message_id}</div>
+      {s.status === "accepted" && <div className="mt-0.5 text-[12px] opacity-90">Accepted means the provider took the message. Delivery is confirmed only by a delivery webhook.</div>}
     </div>
   );
 }
