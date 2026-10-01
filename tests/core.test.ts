@@ -139,3 +139,17 @@ describe("AI prompts", () => {
     }
   });
 });
+
+describe("name forms from links and email addresses", () => {
+  it("ignores ordinary words that also appear in lower case, but keeps capitalised names", () => {
+    const cv = "Virat Patel\nvirat.patel@logistics-squad.example | linkedin.com/in/virat-logistics-squad\nEXPERIENCE\nProduct Manager at a logistics startup, running a squad of six. Patel led onboarding.";
+    const sep = separatePII(cv, null, "pm_04_virat_patel.pdf");
+    expect(sep.redactedTokens).toContain("patel");
+    expect(sep.redactedTokens).toContain("virat");
+    expect(sep.redactedTokens).not.toContain("logistics");
+    expect(sep.redactedTokens).not.toContain("squad");
+    const text = sep.sanitizedLines.join("\n");
+    expect(text).toMatch(/logistics startup/);
+    expect(text).not.toMatch(/Patel|Virat/);
+  });
+});

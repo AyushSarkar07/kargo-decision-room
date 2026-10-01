@@ -137,8 +137,14 @@ export function separatePII(rawText: string, nameOverride?: string | null, filen
   const phones = [...new Set(phonesIn(rawText.replace(EMAIL_RE, " ").replace(URL_RE, " ")))];
   // Redact every name form we can find: override, text, file name, profile slugs, email usernames,
   // and joined forms used in handles ("firstlast").
-  const slugTokens = links.flatMap((l) => tokensFrom(l.split(/\/in\/|\.com\/|\.net\/|\.io\//).pop() ?? ""));
-  const emailTokens = emails.flatMap((e) => tokensFrom(e.split("@")[0]));
+  // Words from links and email addresses can be ordinary words ("logistics", "squad"). Treat one as a
+  // name only if every appearance in the CV is capitalised, as names are.
+  const onlyCapitalised = (tok: string) => {
+    const hits = [...rawText.matchAll(tokenPattern(tok, "gi"))];
+    return hits.length === 0 || hits.every((h) => /^[A-Z]/.test(h[0]));
+  };
+  const slugTokens = links.flatMap((l) => tokensFrom(l.split(/\/in\/|\.com\/|\.net\/|\.io\//).pop() ?? "")).filter(onlyCapitalised);
+  const emailTokens = emails.flatMap((e) => tokensFrom(e.split("@")[0])).filter(onlyCapitalised);
   const baseTokens = [...new Set([...nameTokens(nameOverride ?? null), ...nameTokens(detected), ...nameTokens(fromFile), ...slugTokens, ...emailTokens].map((t) => t.toLowerCase()))];
   const joined = [nameOverride, detected, fromFile]
     .filter(Boolean)
