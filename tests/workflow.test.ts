@@ -289,3 +289,17 @@ describe("role not stated", () => {
     expect(buildRoleBoard("PM", cands).ranked.map((r) => r.candidate.applicant.id)).not.toContain(a.id);
   });
 });
+
+describe("duplicates with a shared mailbox", () => {
+  it("does not flag different people who share one email address", async () => {
+    freshStore();
+    const mk = (name: string, extra: string) =>
+      Buffer.from(`${name}\nshared.inbox@example.org | +91 90000 3${extra}\n\nEXPERIENCE\nProduct Manager | Freightco | 2021 – Present\n- Owned the booking flow for ${extra} freight forwarder accounts and ran weekly reviews with operations leads\n- Shipped document checks that reduced amendment requests across accounts`);
+    const a = await ingestFile({ data: mk("Asha Rao", "1111"), filename: "asha_rao.txt", role: "PM" });
+    const b = await ingestFile({ data: mk("Vikas Rao", "2222"), filename: "vikas_rao.txt", role: "PM" }); // shares a surname only
+    expect(a.duplicate_of).toBeNull();
+    expect(b.duplicate_of).toBeNull();
+    const c = await ingestFile({ data: mk("Asha Rao", "3333"), filename: "asha_rao_v2.txt", role: "PM" });
+    expect(c.duplicate_of).toBe(a.id);
+  });
+});

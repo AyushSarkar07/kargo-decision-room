@@ -46,7 +46,7 @@ email. **Live run (29 Sep 2026, `npm run test:live`, results in `docs/live-resul
 | Invite and rejection drafts for everyone; draft ≠ decision | Tested | Both drafts per applicant; decision recorded separately |
 | Founder can change the decision and email type | Tested | Browser |
 | Re-ranking as applicants are added keeps decisions, edits, and sends | Tested | `workflow.test.ts` |
-| Duplicate detection (exact file; same text or email) | Tested | 409 for an exact file; `duplicate_of` flag for the rest |
+| Duplicate detection (exact file; same text; same email *and* name) | Tested | 409 for an exact file; `duplicate_of` for same text, or same email and same full name. All 50 case CVs share one course test inbox, so email alone is not treated as a duplicate |
 
 ## 3. Experience
 
@@ -90,7 +90,7 @@ email. **Live run (29 Sep 2026, `npm run test:live`, results in `docs/live-resul
 | --- | --- | --- |
 | 3-applicant test (strong PM, weak SPM, ambiguous) | Tested (live, synthetic fixtures) | Strong PM 95 (PM, 100% coverage); weak SPM 5 (SPM); ambiguous 25 (PM, 40% coverage, 3 criteria Not evidenced, so labelled incomplete). DB check: no name, email, or phone in stored content; PII stored separately; 6 Gemini requests checked for PII |
 | Records and decisions persist after refresh | Tested | Store reopened; browser reload |
-| 60 application CVs processed | **Blocked** | `applications/` was not provided. The 8 hires were not used as a substitute |
+| 60 application CVs processed | Tested (live), **50 found** | The course's `resumes` folder contains 50 CVs, not 60: 30 numbered (role not stated in file or CV), 15 `pm_`, 5 `spm_`. All 50 loaded through the live app in 6 min 52 s (3 at a time); all 50 scored for both roles after the redaction fix below. The 30 with no stated role are scored but not ranked until the founder picks a role |
 | Two new CVs, upload to confirmed test send, timed | Tested (live) | 36.0 s from upload to provider acceptance (scoring about 16–17 s per CV). Measured server-side through the app's own code, without the browser/HTTP layer |
 | Receipt within 30 s | **Not verified** | The Resend key is send-only, so delivery status can't be read back, and `delivered@resend.dev` is a simulated inbox. To measure receipt, add your own inbox to `EMAIL_TEST_ALLOWLIST` (or configure the delivery webhook) |
 
@@ -102,3 +102,5 @@ email. **Live run (29 Sep 2026, `npm run test:live`, results in `docs/live-resul
 - Thin but readable CVs were being sent to "Needs text". The unreadable threshold now catches only near-empty extractions.
 - Lists labelled simulated sends as "Sent". They now say "Simulated send".
 - Runtime file reads (calibration, demo seeding) made the build trace the whole project, including `source/` (real CVs) and `.data/`, into every server route. `next.config.ts` now excludes private and local folders; verified in the build's trace files.
+- **Privacy failure on the case applications (found 30 Sep, fixed 1 Oct).** In the first load, names were not detected in 22 of the 46 CVs that were scored, because those CVs open with headings, run words together in the PDF text, or have no name line. Those names were sent to Gemini. The guard caught only 4, where a heading had been mistaken for the name. Fixed: name forms are now taken from the text, file name, profile slugs and email usernames (only if they appear in the CV, and link/email words only if always capitalised); headings are never taken as names; names of 5+ letters match inside run-together text; any Indian mobile format is redacted; scoring fails closed when no name is known. All 50 were re-sanitized from the stored originals and re-scored, overwriting the earlier text, evidence, briefs and drafts. Database audit afterwards: 0 names in stored CV text and 0 in any AI output (evaluations, briefs, drafts, summaries). Data already sent to Google in the first load cannot be recalled. The people are fictional.
+- All 50 case CVs share one email address (the course test inbox), so "same email" flagged 49 as duplicates. Duplicates now need the same text, or the same email and the same full name.

@@ -2,7 +2,7 @@ import "server-only";
 import { randomUUID } from "node:crypto";
 import { getConfig } from "./config";
 import { extractText, findInstructionLikeLines, kindFromName, MAX_FILE_BYTES, sha256, textHash, toLines } from "./extract";
-import { nameFromFilename, separatePII } from "./pii";
+import { nameFromFilename, nameTokens, separatePII } from "./pii";
 import { rubric, RUBRIC_VERSION, ROLES, otherRole, type Role } from "./rubric";
 import { summarize } from "./scoring";
 import { getStore } from "./store";
@@ -111,8 +111,14 @@ async function finishSeparation(base: Applicant, rawText: string, warnings: stri
   let duplicateOf: string | null = null;
   const sameText = await store.findApplicantByHash("text_hash", tHash, base.id);
   if (sameText) duplicateOf = sameText.id;
-  else if (sep.pii.email) duplicateOf = await store.findApplicantIdByEmail(sep.pii.email, base.id);
-  if (duplicateOf) w.push("Possible duplicate of another applicant (same CV text or email).");
+  else if (sep.pii.email) {
+    // A shared mailbox (e.g. a test inbox used on many CVs) is not a duplicate: require the name to match too.
+    const other = await store.findApplicantIdByEmail(sep.pii.email, base.id);
+    const otherName = other ? (await store.getPII(other))?.full_name : null;
+    const norm = (n: string | null | undefined) => nameTokens(n ?? null).map((t) => t.toLowerCase()).sort().join(" ");
+    if (other && otherName && norm(otherName) !== "" && norm(otherName) === norm(sep.pii.full_name)) duplicateOf = other;
+  }
+  if (duplicateOf) w.push("Possible duplicate of another applicant (same CV text, or same email and name).");
 
   const patch: Partial<Applicant> = {
     status: "ready_to_score",
